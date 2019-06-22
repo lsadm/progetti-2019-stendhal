@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools" android:id="@+id/nav_graph" app:startDestination="@id/home">
+
+    <fragment android:id="@+id/home" android:name="com.example.stendhal_1.Home" android:label="fragment_home"
+              tools:layout="@layout/fragment_home">
+        <action android:id="@+id/action_home_to_quadro_giorno" app:destination="@id/quadro_giorno"/>
+        <action android:id="@+id/action_home_to_periodi" app:destination="@id/periodi"/>
+    </fragment>
+
+
+    <fragment android:id="@+id/quadro_giorno" android:name="com.example.stendhal_1.Quadro_giorno"
+              android:label="fragment_quadro_giorno" tools:layout="@layout/fragment_quadro_giorno"/>
+    <fragment android:id="@+id/periodi" android:name="com.example.stendhal_1.periodi" android:label="fragment_periodi"
+              tools:layout="@layout/fragment_periodi"/>
+</navigation>
