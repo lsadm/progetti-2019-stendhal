@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools" android:id="@+id/nav_graph" app:startDestination="@id/home">
+            xmlns:tools="http://schemas.android.com/tools" android:id="@+id/nav_graph"
+            app:startDestination="@id/home">
 
     <fragment android:id="@+id/home" android:name="com.example.stendhal_1.Home" android:label="fragment_home"
               tools:layout="@layout/fragment_home">
+        <!-- vedi -->
         <action android:id="@+id/action_home_to_quadro_giorno" app:destination="@id/quadro_giorno"/>
         <action android:id="@+id/action_home_to_periodi" app:destination="@id/periodi"/>
     </fragment>

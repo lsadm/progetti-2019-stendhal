@@ -10,8 +10,8 @@ object database {
 
     //inizializzazione
     init    {
-        periodi.add(Periodo("Rinascimento",1500))
-        periodi.add(Periodo("Barocco",1600))
+        periodi.add(Periodo("Rinascimento","1500"))
+        periodi.add(Periodo("Barocco","1600"))
     }
 
 
