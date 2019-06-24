@@ -22,12 +22,18 @@ class Home : Fragment() {
     }
 
 
-
+    //vedi bene
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        imageButton_quadrodelgiorno.setOnClickListener {
-            Navigation.findNavController(view).navigate(R.id.action_home_to_quadro_giorno)
+        imageButton_periodi.setOnClickListener {
+            Navigation.findNavController(view).navigate(R.id.action_home_to_periodi)
         }
-    }
-
+        imageButton_quadrodelgiorno.setOnClickListener {
+                Navigation.findNavController(view).navigate(R.id.action_home_to_quadro_giorno)
+            }
+        imageButton_quadri_artisti_emergenti.setOnClickListener {
+                    Navigation.findNavController(view).navigate(R.id.action_home_to_artisti_emergenti)
+                }
+     }
 }
+

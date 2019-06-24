@@ -4,16 +4,26 @@
             xmlns:tools="http://schemas.android.com/tools" android:id="@+id/nav_graph"
             app:startDestination="@id/home">
 
+    <fragment android:id="@+id/quadro_giorno" android:name="com.example.stendhal_1.Quadro_giorno"
+              android:label="fragment_quadro_giorno" tools:layout="@layout/fragment_quadro_giorno"/>
+
     <fragment android:id="@+id/home" android:name="com.example.stendhal_1.Home" android:label="fragment_home"
               tools:layout="@layout/fragment_home">
-        <!-- vedi -->
         <action android:id="@+id/action_home_to_quadro_giorno" app:destination="@id/quadro_giorno"/>
         <action android:id="@+id/action_home_to_periodi" app:destination="@id/periodi"/>
+        <action android:id="@+id/action_home_to_artisti_emergenti" app:destination="@id/artisti_emergenti"/>
     </fragment>
 
 
-    <fragment android:id="@+id/quadro_giorno" android:name="com.example.stendhal_1.Quadro_giorno"
-              android:label="fragment_quadro_giorno" tools:layout="@layout/fragment_quadro_giorno"/>
-    <fragment android:id="@+id/periodi" android:name="com.example.stendhal_1.periodi" android:label="fragment_periodi"
-              tools:layout="@layout/fragment_periodi"/>
+    <fragment android:id="@+id/SingoloPeriodo" android:name="com.example.stendhal_1.SingoloPeriodo"
+              android:label="fragment_singolo_periodo" tools:layout="@layout/fragment_singolo_periodo"/>
+
+    <fragment android:id="@+id/periodi" android:name="com.example.stendhal_1.Periodo" android:label="fragment_periodi"
+              tools:layout="@layout/fragment_periodi">
+        <action android:id="@+id/action_periodi_to_SingoloPeriodo" app:destination="@id/SingoloPeriodo"/>
+    </fragment>
+    <fragment android:id="@+id/artisti_emergenti" android:name="com.example.stendhal_1.artisti_emergenti"
+              android:label="fragment_artisti_emergenti" tools:layout="@layout/fragment_artisti_emergenti"/>
+
+
 </navigation>

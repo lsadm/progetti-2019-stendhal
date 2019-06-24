@@ -1,15 +1,14 @@
-package com.example.stendhal_1.datamodel
+package com.example.stendhal_1
 
 import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.example.stendhal_1.R
-import com.example.stendhal_1.rigaperiodoviewholder
+import com.example.stendhal_1.datamodel.Periodo
 
 
 /**
- * Adapter utilizzato per la RecyclerView con l'elenco delle birre
+ * Adapter utilizzato per legare oggetti view holders con i dati contenuti da essi
  *
  */
 

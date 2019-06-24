@@ -15,5 +15,10 @@ object database {
     }
 
 
+    // Restituisce l'elenco di tutte le birre presenti
+    fun getElencoPeriodi(): ArrayList<Periodo> {
+        return periodi //return l'arraylist
+    }
+
 
 }
