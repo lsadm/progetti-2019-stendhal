@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "228687263678",
+    "firebase_url": "https://stendhal-a2a91.firebaseio.com",
+    "project_id": "stendhal-a2a91",
+    "storage_bucket": "stendhal-a2a91.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:228687263678:android:81db0866f837313a",
+        "android_client_info": {
+          "package_name": "com.example.stendhal_1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "228687263678-nv4a2j5tiioiv0si32a28um8kgd7gkuu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.stendhal_1",
+            "certificate_hash": "5a9aaa401546cf9d17a15095d53d08f1089a3a2a"
+          }
+        },
+        {
+          "client_id": "228687263678-d98jkhec62opcap8ml21cgkgtajjo1qu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDY-ivBUM8dWkj8WaxIj8lzfCohVOt3Jys"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "228687263678-d98jkhec62opcap8ml21cgkgtajjo1qu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
