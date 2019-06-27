@@ -1,7 +1,5 @@
 <resources>
     <string name="app_name">Stendhal_1</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="periodo_nome">Nome</string>
     <string name="periodo_anno">Anno</string>
@@ -11,6 +9,6 @@
     <string name="Username">Username</string>
     <string name="Autologin">Accesso automatico</string>
     <string name="Password">Password</string>
-
+    <string name="newaccount">Creazione nuovo account</string>
 
 </resources>

@@ -5,9 +5,6 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.navigation.Navigation
-import androidx.navigation.ui.setupWithNavController
-import kotlinx.android.synthetic.main.activity_main.*
-
 
 class MainActivity : AppCompatActivity() {
 
@@ -29,11 +26,8 @@ class MainActivity : AppCompatActivity() {
      */
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
 
-        when (item?.itemId) {
-            R.id.login -> Navigation.findNavController(
-                this,
-                R.id.navHost
-            ).navigate(R.id.action_home_to_)
+        when(item?.itemId) {
+            R.id.fragment_login -> Navigation.findNavController(this, R.id.navHost).navigate(R.id.action_to_login)
             else -> return false    // Voce non processata
         }
 
