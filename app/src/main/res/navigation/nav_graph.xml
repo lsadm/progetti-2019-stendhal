@@ -24,6 +24,8 @@
     </fragment>
     <fragment android:id="@+id/artisti_emergenti" android:name="com.example.stendhal_1.artisti_emergenti"
               android:label="fragment_artisti_emergenti" tools:layout="@layout/fragment_artisti_emergenti"/>
+    <fragment android:id="@+id/login" android:name="com.example.stendhal_1.login" android:label="fragment_login"
+              tools:layout="@layout/fragment_login"/>
 
 
 </navigation>

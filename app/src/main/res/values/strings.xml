@@ -7,5 +7,10 @@
     <string name="periodo_anno">Anno</string>
     <string name="image_period">image_period</string>
     <string name="defaults">defaults</string>
+    <string name="login">Login</string>
+    <string name="Username">Username</string>
+    <string name="Autologin">Accesso automatico</string>
+    <string name="Password">Password</string>
+
 
 </resources>
