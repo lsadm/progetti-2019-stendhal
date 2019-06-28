@@ -36,7 +36,6 @@ class Periodo : Fragment() {
         /*val v: View? = activity?.findViewById(R.id.bottomNavigation)
         v?.visibility=View.VISIBLE*/
         val period=ArrayList<com.example.stendhal_1.datamodel.Periodo?>()
-        val keys = ArrayList<String>()
         val adapter = PeriodiAdapter(period,requireContext())
         list_periodi.adapter = adapter
 
@@ -47,7 +46,6 @@ class Periodo : Fragment() {
                 // A new comment has been added, add it to the displayed list
                 val g = dataSnapshot.getValue(com.example.stendhal_1.datamodel.Periodo::class.java)
                 period.add(g)
-                keys.add(dataSnapshot.key.toString()) //aggiungo le varie key in un vettore
                 adapter.notifyItemInserted(period.indexOf(g))
 
 
@@ -56,9 +54,6 @@ class Periodo : Fragment() {
 
             override fun onChildChanged(dataSnapshot: DataSnapshot, previousChildName: String?) {
                 Log.d(TAG, "onChildChanged: ${dataSnapshot.key}")
-                val g = dataSnapshot.getValue(com.example.stendhal_1.datamodel.Periodo::class.java)
-                val index = keys.indexOf(dataSnapshot.key.toString()) //ottengo l'indice del gioco aggiornato
-                period[index]=g
                 adapter.notifyDataSetChanged()
                 // ...
             }

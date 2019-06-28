@@ -1,9 +1,11 @@
 package com.example.stendhal_1
 
 import android.content.Context
+import android.os.Bundle
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.navigation.Navigation
 import com.google.firebase.storage.FirebaseStorage
 import com.example.stendhal_1.datamodel.Periodo
 
@@ -33,5 +35,12 @@ class PeriodiAdapter(val dataset: ArrayList<Periodo?>, val context: Context) : R
 
         viewHolder.tvNome.text = periodo?.nome
         viewHolder.tvAnno.text = periodo?.anno
+
+        viewHolder.itemView.setOnClickListener {
+            // Creo un bundle e vi inserisco il gioco da visualizzare
+            val b = Bundle()
+            b.putParcelable("periodo",periodo)
+            Navigation.findNavController(it).navigate(R.id.action_to_SingoloPeriodo, b)
+        }
     }
 }

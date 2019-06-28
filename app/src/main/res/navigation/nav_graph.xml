@@ -23,7 +23,7 @@
 
     <fragment android:id="@+id/periodi" android:name="com.example.stendhal_1.Periodo" android:label="fragment_periodi"
               tools:layout="@layout/fragment_periodi">
-        <action android:id="@+id/action_periodi_to_SingoloPeriodo" app:destination="@id/SingoloPeriodo"/>
+        <action android:id="@+id/action_to_SingoloPeriodo" app:destination="@id/SingoloPeriodo"/>
         <action android:id="@+id/action_to_login" app:destination="@id/login"/>
     </fragment>
     <fragment android:id="@+id/artisti_emergenti" android:name="com.example.stendhal_1.artisti_emergenti"
