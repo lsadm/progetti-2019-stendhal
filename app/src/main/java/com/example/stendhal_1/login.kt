@@ -1,53 +1,38 @@
 package com.example.stendhal_1
 
 import android.content.Context
-import android.net.Uri
+import android.content.SharedPreferences
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.util.Log
 import android.view.*
+import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
 import androidx.navigation.Navigation
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.android.synthetic.main.fragment_login.*
-import kotlinx.android.synthetic.main.fragment_newaccount.*
-import kotlinx.android.synthetic.main.fragment_newaccount.btnAnnulla
-import kotlinx.android.synthetic.main.fragment_newaccount.btnConferma
+import kotlinx.android.synthetic.main.fragment_newaccount.okbtn
 import kotlinx.android.synthetic.main.fragment_newaccount.email
 import kotlinx.android.synthetic.main.fragment_newaccount.password
 
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Activities that contain this fragment must implement the
- * [fragment_impostazioni.OnFragmentInteractionListener] interface
- * to handle interaction events.
- * Use the [fragment_impostazioni.newInstance] factory method to
- * create an instance of this fragment.
- *
- */
 class login : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-    private var listener: OnFragmentInteractionListener? = null
+
     var auth = FirebaseAuth.getInstance()
-    private val TAG = "MainActivity"
+    var user: FirebaseUser? = null
+    private val PREF_NAME = "Stendhal"      // Nome del file
+    private val PREF_USERNAME = "Username"
+    private val PREF_PASSWORD = "Password"
+    private val PREF_AUTOLOGIN = "AutoLogin"
+    private lateinit var sharedPref: SharedPreferences
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-        //aggiungo questa riga per aggiungere un riferimento al menu
         setHasOptionsMenu(true)
 
 
@@ -59,35 +44,28 @@ class login : Fragment() {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_login, container, false)
     }
-    public override fun onStart() {
-        super.onStart()
-        // Check if user is signed in (non-null) and update UI accordingly.
-        val currentUser = auth.getCurrentUser()
-        updateUI(currentUser)
-    }
-    fun updateUI(usr : FirebaseUser?){
-        if (usr!= null){
-            Toast.makeText(activity,"Utente loggato", Toast.LENGTH_LONG).show()
+    private fun updateUI(usr: FirebaseUser?) {
+        if (usr != null) {
+            Toast.makeText(activity, "Utente che ha effettuato il login", Toast.LENGTH_LONG).show()
+            Navigation.findNavController(view!!).navigateUp() //torno alla schermata precedente
         }
     }
 
 
-    fun signIn(email : String, password: String){
+    private fun signIn(email: String, password: String) {
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(MainActivity()) { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d("MainActivity", "signInWithEmail:success")
-                    val user = auth.currentUser
+                    user = auth.currentUser
                     updateUI(user)
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w("MainActivity", "signInWithEmail:failure", task.exception)
-                    Toast.makeText(activity,"Autenticazione fallita", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(activity, "Autenticazione fallita", Toast.LENGTH_SHORT).show()
                     updateUI(null)
                 }
-
-                // ...
             }
     }
 
@@ -96,81 +74,64 @@ class login : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-       /* val v: View? = activity?.findViewById(R.id.bottomNavigation)
-        v?.visibility=View.GONE*/
-        btnConferma.setOnClickListener{
-            if (email.text.toString().length>0 && password.text.toString().length >0) {
+        //setto titolo e colore dell'actionbar
+        (activity as AppCompatActivity).supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.parseColor("#212121")))
+        (activity as AppCompatActivity).supportActionBar?.setTitle("Login")
+        //nascondo il bottomNavigation
+        //val v: View? = activity?.findViewById(R.id.bottomNavigation)
+        //v?.visibility = View.GONE
+
+        sharedPref = activity!!.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+        traiinfo()
+
+        //provo a effettuare il login
+        okbtn.setOnClickListener {
+            if (validcamp()) {
+                saveinfo()
                 signIn(email.text.toString(), password.text.toString())
-            }
-            else {
-                Toast.makeText(activity,"Email o password troppo breve",Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(activity, "Email o password troppo breve", Toast.LENGTH_SHORT).show()
             }
         }
-        newaccountbtn.setOnClickListener{
+        newaccountbtn.setOnClickListener {
             Navigation.findNavController(it).navigate(R.id.action_login_to_newaccount)
-        }
-        btnAnnulla.setOnClickListener{
-            Navigation.findNavController(it).navigateUp()
         }
     }
 
-    //questa funzione rende invisibile il menu nel fragment impostazioni
+
+    private fun validcamp() : Boolean{
+        return (email.text.toString().isNotEmpty() && password.text.toString().isNotEmpty())
+    }
+
+    //salva i campi inseriti dall'utente
+    private fun saveinfo() {
+        val editor = sharedPref.edit()
+        val username = email.text.toString()
+        val password = password.text.toString()
+        val autoLogin = chkAutoLogin.isChecked
+
+        editor.putString(PREF_USERNAME, username)
+        editor.putString(PREF_PASSWORD,password)
+        editor.putBoolean(PREF_AUTOLOGIN, autoLogin)
+        editor.apply()    // Salva le modifiche
+    }
+
+    //visualizza le informazioni inserite in precedenza dall'utente per l'autologin
+    private fun traiinfo() {
+        val username = sharedPref.getString(PREF_USERNAME, "")
+        val pass = sharedPref.getString(PREF_PASSWORD,"")
+        val autoLogin = sharedPref.getBoolean(PREF_AUTOLOGIN, false)
+
+        email.setText(username)
+        password.setText(pass)
+        chkAutoLogin.isChecked = autoLogin
+    }
+    //questo metodo permette di nascondere il menu log in
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         super.onCreateOptionsMenu(menu, inflater)
         menu?.clear()
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    fun onButtonPressed(uri: Uri) {
-        listener?.onFragmentInteraction(uri)
-    }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        if (context is OnFragmentInteractionListener) {
-            listener = context
-        } else {
-        }
-    }
 
-    override fun onDetach() {
-        super.onDetach()
-        listener = null
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     *
-     *
-     * See the Android Training lesson [Communicating with Other Fragments]
-     * (http://developer.android.com/training/basics/fragments/communicating.html)
-     * for more information.
-     */
-    interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        fun onFragmentInteraction(uri: Uri)
-    }
-
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment fragment_impostazioni.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            login().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
-    }
 }

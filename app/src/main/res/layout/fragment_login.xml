@@ -59,13 +59,13 @@
             android:layout_height="wrap_content"
             android:id="@+id/btnAnnulla"
             app:layout_constraintTop_toBottomOf="@+id/chkAutoLogin" app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintHorizontal_bias="0.5" app:layout_constraintEnd_toStartOf="@+id/btnConferma"
+            app:layout_constraintHorizontal_bias="0.5" app:layout_constraintEnd_toStartOf="@+id/okbtn"
             android:layout_marginTop="48dp"/>
     <Button
             android:text="@android:string/ok"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/btnConferma" app:layout_constraintStart_toEndOf="@+id/btnAnnulla"
+            android:id="@+id/okbtn" app:layout_constraintStart_toEndOf="@+id/btnAnnulla"
             app:layout_constraintHorizontal_bias="0.5" app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="@+id/btnAnnulla"/>
     <android.support.constraint.Guideline android:layout_width="wrap_content" android:layout_height="wrap_content"

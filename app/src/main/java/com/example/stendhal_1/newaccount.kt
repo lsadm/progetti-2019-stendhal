@@ -1,45 +1,34 @@
 package com.example.stendhal_1
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.navigation.Navigation
+import com.example.stendhal_1.datamodel.Utente
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.fragment_newaccount.*
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Activities that contain this fragment must implement the
- * [newaccount.OnFragmentInteractionListener] interface
- * to handle interaction events.
- * Use the [newaccount.newInstance] factory method to
- * create an instance of this fragment.
- *
- */
 class newaccount : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-    private var listener: OnFragmentInteractionListener? = null
-    private lateinit var auth : FirebaseAuth
+
+    private val auth = FirebaseAuth.getInstance()
     private val TAG = "MainActivity"
+    private val database = FirebaseDatabase.getInstance().reference
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-        auth = FirebaseAuth.getInstance()
-        //aggiungo questa riga per aggiungere un riferimento al menu
+        //modifico il nome dell'action bar
+        (activity as AppCompatActivity).supportActionBar?.setTitle("Nuovo Account")
+        //con questa riga posso aggiungere un riferimento al menu all'interno del fragment newaccount
         setHasOptionsMenu(true)
     }
 
@@ -50,7 +39,7 @@ class newaccount : Fragment() {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_newaccount, container, false)
     }
-    //questa funzione rende invisibile il menu nel fragment impostazioni
+    //questa funzione rende invisibile il menu nel fragment newaccount
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         super.onCreateOptionsMenu(menu, inflater)
         menu?.clear()
@@ -58,22 +47,32 @@ class newaccount : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        (activity as AppCompatActivity).supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.parseColor("#212121")))
+        (activity as AppCompatActivity).supportActionBar?.setTitle("Creazione account")
        /* val v: View? = activity?.findViewById(R.id.bottomNavigation)
         v?.visibility=View.GONE*/
-        btnConferma.setOnClickListener{
-            if (email.text.toString().length>0 && password.text.toString().length >0) {
-                createAccount(email.text.toString(), password.text.toString())
+        okbtn.setOnClickListener{
+            if (verificacampi()) {
+                createAccount(email.text.toString(),nome.text.toString(),password.text.toString())
             }
             else{
                 Toast.makeText(activity,"Email o password troppo breve",Toast.LENGTH_SHORT).show()
             }
         }
-        btnAnnulla.setOnClickListener {
-            Navigation.findNavController(it).navigateUp()
-        }
+
     }
 
-    fun createAccount(email : String, password : String) {
+    //memorizza il nuovo utente sul database
+    private fun writeNewUser(user : String?, usr : Utente) {
+        database.child("Utenti").child(user.toString()).child("Quadri").child("Account").setValue(usr)
+    }
+
+    //verifica se i campi sono stati riempiti correttamente
+    private fun verificacampi() : Boolean{
+        return email.text.toString().isNotEmpty() && password.text.toString().isNotEmpty() && nome.text.toString().isNotEmpty()
+    }
+
+    fun createAccount(email : String, nome : String,password : String) {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(MainActivity()) { task ->
                 if (task.isSuccessful) {
@@ -94,39 +93,7 @@ class newaccount : Fragment() {
             }
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     *
-     *
-     * See the Android Training lesson [Communicating with Other Fragments]
-     * (http://developer.android.com/training/basics/fragments/communicating.html)
-     * for more information.
-     */
-    interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        fun onFragmentInteraction(uri: Uri)
-    }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment newaccount.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            newaccount().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
-    }
+
+
 }

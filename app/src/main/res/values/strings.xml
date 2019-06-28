@@ -4,16 +4,17 @@
     <string name="periodo_nome">Nome</string>
     <string name="periodo_anno">Anno</string>
     <string name="image_period">image_period</string>
-
+    <string name="email">E-mail</string>
+    <string name="Nome">Nome</string>
     <string name="quadro_nome">Nome</string>
     <string name="quadro_autore">Autore</string>
     <string name="image_quadro">image_quadro</string>
-
     <string name="defaults">defaults</string>
     <string name="login">Login</string>
     <string name="Username">Username</string>
     <string name="Autologin">Accesso automatico</string>
     <string name="Password">Password</string>
+    <string name="crea">Crea</string>
     <string name="newaccount">Creazione nuovo account</string>
 
 </resources>
