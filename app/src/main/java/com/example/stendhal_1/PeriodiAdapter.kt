@@ -4,6 +4,7 @@ import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import com.google.firebase.storage.FirebaseStorage
 import com.example.stendhal_1.datamodel.Periodo
 
 
@@ -14,6 +15,7 @@ import com.example.stendhal_1.datamodel.Periodo
 
 class PeriodiAdapter(val dataset: ArrayList<Periodo?>, val context: Context) : RecyclerView.Adapter<rigaperiodoviewholder>() {
 
+    val storageRef = FirebaseStorage.getInstance().getReference()
     // Invocata per creare un ViewHolder
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): rigaperiodoviewholder {
         // Crea e restituisce un viewholder, effettuando l'inflate del layout relativo alla riga
