@@ -12,7 +12,7 @@ import com.example.stendhal_1.datamodel.Periodo
  *
  */
 
-class PeriodiAdapter(val dataset: ArrayList<Periodo>, val context: Context) : RecyclerView.Adapter<rigaperiodoviewholder>() {
+class PeriodiAdapter(val dataset: ArrayList<Periodo?>, val context: Context) : RecyclerView.Adapter<rigaperiodoviewholder>() {
 
     // Invocata per creare un ViewHolder
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): rigaperiodoviewholder {
@@ -29,7 +29,7 @@ class PeriodiAdapter(val dataset: ArrayList<Periodo>, val context: Context) : Re
     override fun onBindViewHolder(viewHolder: rigaperiodoviewholder, position: Int) {
         val periodo = dataset.get(position)
 
-        viewHolder.tvNome.text = periodo.nome
-        viewHolder.tvAnno.text = periodo.anno
+        viewHolder.tvNome.text = periodo?.nome
+        viewHolder.tvAnno.text = periodo?.anno
     }
 }

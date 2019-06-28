@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "228687263678-9b456raemof7bjdniafha7s5b7brqfjg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.stendhal_1",
+            "certificate_hash": "e45aa2716b3b0597b0363cf9d6523a00be37fcc5"
+          }
+        },
+        {
           "client_id": "228687263678-nv4a2j5tiioiv0si32a28um8kgd7gkuu.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
