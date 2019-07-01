@@ -8,6 +8,7 @@
     <string name="Nome">Nome</string>
     <string name="quadro_nome">Nome</string>
     <string name="quadro_autore">Autore</string>
+    <string name="quadro_anno">Anno</string>
     <string name="image_quadro">image_quadro</string>
     <string name="defaults">defaults</string>
     <string name="login">Login</string>

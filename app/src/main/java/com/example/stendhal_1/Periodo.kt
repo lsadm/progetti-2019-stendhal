@@ -36,7 +36,7 @@ class Periodo : Fragment() {
         val adapter = PeriodiAdapter(period,requireContext())
         list_periodi.adapter = adapter
 
-
+        //lettura periodi dal database (nodo periodi)
         val periodiListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 period.clear()

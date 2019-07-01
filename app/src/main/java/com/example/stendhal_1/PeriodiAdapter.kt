@@ -10,15 +10,8 @@ import com.google.firebase.storage.FirebaseStorage
 import com.example.stendhal_1.datamodel.Periodo
 import kotlinx.android.synthetic.main.fragment_singolo_periodo.view.*
 
-
-/**
- * Adapter utilizzato per legare oggetti view holders con i dati contenuti da essi
- *
- */
-
 class PeriodiAdapter(val dataset: ArrayList<Periodo?>, val context: Context) : RecyclerView.Adapter<rigaperiodoviewholder>() {
 
-    val storageRef = FirebaseStorage.getInstance().getReference()
     // Invocata per creare un ViewHolder
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): rigaperiodoviewholder {
         // Crea e restituisce un viewholder, effettuando l'inflate del layout relativo alla riga
@@ -39,7 +32,6 @@ class PeriodiAdapter(val dataset: ArrayList<Periodo?>, val context: Context) : R
         viewHolder.tvAnno.text = anno_string
 
         viewHolder.itemView.setOnClickListener {
-
             val b = Bundle()
             b.putParcelable("periodo",periodo)
             Navigation.findNavController(it).navigate(R.id.action_to_SingoloPeriodo, b)
