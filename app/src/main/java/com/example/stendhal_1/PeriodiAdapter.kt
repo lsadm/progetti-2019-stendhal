@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.navigation.Navigation
 import com.google.firebase.storage.FirebaseStorage
 import com.example.stendhal_1.datamodel.Periodo
+import kotlinx.android.synthetic.main.fragment_singolo_periodo.view.*
 
 
 /**
@@ -37,7 +38,7 @@ class PeriodiAdapter(val dataset: ArrayList<Periodo?>, val context: Context) : R
         viewHolder.tvAnno.text = periodo?.anno
 
         viewHolder.itemView.setOnClickListener {
-            // Creo un bundle e vi inserisco il gioco da visualizzare
+
             val b = Bundle()
             b.putParcelable("periodo",periodo)
             Navigation.findNavController(it).navigate(R.id.action_to_SingoloPeriodo, b)

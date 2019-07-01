@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.navigation.Navigation
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.fragment_periodi.*
 
@@ -77,7 +76,25 @@ class Periodo : Fragment() {
 
             }
         }
-        database.addChildEventListener(childEventListener)
+
+        val periodiListener = object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                period.clear()
+                snapshot.children.forEach {
+                    val periodo : com.example.stendhal_1.datamodel.Periodo = it.getValue(com.example.stendhal_1.datamodel.Periodo::class.java)!!
+                    period.add(periodo)
+                }
+                adapter.notifyDataSetChanged()
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                Log.w(TAG, "postComments:onCancelled", databaseError.toException())
+                Toast.makeText(context, "Failed to load comments.", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        database.addValueEventListener(periodiListener)
+        // database.addChildEventListener(childEventListener)
 
 
         // Imposto il layout manager a lineare per avere scrolling in una direzione

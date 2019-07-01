@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * Processa le voci del venu
+     * Processa le voci del menu
      */
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
 
