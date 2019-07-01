@@ -34,7 +34,7 @@ class QuadriAdapter(val dataset: ArrayList<Quadro?>, val context: Context) : Rec
         viewHolder.itemView.setOnClickListener {//Cosa fare quando seleziono una view
             val b = Bundle()
             b.putParcelable("quadro",quadro)
-           // Navigation.findNavController(it).navigate(R.id.action_to_SingoloQuadro, b)
+            Navigation.findNavController(it).navigate(R.id.action_to_dettaglio_quadro, b)
         }
     }
 }

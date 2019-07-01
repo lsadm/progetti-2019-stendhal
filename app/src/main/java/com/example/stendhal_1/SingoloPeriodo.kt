@@ -63,7 +63,6 @@ class SingoloPeriodo : Fragment() {
 
             }
 
-                //Log.v("Prova", periodo.nome);
             }
         }
 
