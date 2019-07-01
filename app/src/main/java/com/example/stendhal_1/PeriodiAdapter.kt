@@ -33,9 +33,10 @@ class PeriodiAdapter(val dataset: ArrayList<Periodo?>, val context: Context) : R
     // Invocata per visualizzare all'interno del ViewHolder il dato corrispondente alla riga
     override fun onBindViewHolder(viewHolder: rigaperiodoviewholder, position: Int) {
         val periodo = dataset.get(position)
+        val anno_string = periodo?.anno.toString()
 
         viewHolder.tvNome.text = periodo?.nome
-        viewHolder.tvAnno.text = periodo?.anno
+        viewHolder.tvAnno.text = anno_string
 
         viewHolder.itemView.setOnClickListener {
 

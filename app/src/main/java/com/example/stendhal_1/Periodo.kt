@@ -28,8 +28,6 @@ class Periodo : Fragment() {
     }
 
 
-
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         /*val v: View? = activity?.findViewById(R.id.bottomNavigation)
@@ -38,44 +36,6 @@ class Periodo : Fragment() {
         val adapter = PeriodiAdapter(period,requireContext())
         list_periodi.adapter = adapter
 
-        val childEventListener = object : ChildEventListener {
-            override fun onChildAdded(dataSnapshot: DataSnapshot, previousChildName: String?) {
-                Log.d(TAG, "onChildAdded:" + dataSnapshot.key!!)
-
-                // A new comment has been added, add it to the displayed list
-                val g = dataSnapshot.getValue(com.example.stendhal_1.datamodel.Periodo::class.java)
-                period.add(g)
-                adapter.notifyItemInserted(period.indexOf(g))
-
-
-                // ...
-            }
-
-            override fun onChildChanged(dataSnapshot: DataSnapshot, previousChildName: String?) {
-                Log.d(TAG, "onChildChanged: ${dataSnapshot.key}")
-                adapter.notifyDataSetChanged()
-                // ...
-            }
-
-            override fun onChildRemoved(dataSnapshot: DataSnapshot) {
-                Log.d(TAG, "onChildRemoved:" + dataSnapshot.key!!)
-                val g = dataSnapshot.getValue(com.example.stendhal_1.datamodel.Periodo::class.java)
-                val index = period.indexOf(g)
-                period.remove(g)
-                adapter.notifyItemRemoved(index)
-            }
-
-            override fun onChildMoved(dataSnapshot: DataSnapshot, previousChildName: String?) {
-                Log.d(TAG, "onChildMoved:" + dataSnapshot.key!!)
-
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-                Log.w(TAG, "postComments:onCancelled", databaseError.toException())
-                Toast.makeText(context, "Failed to load comments.", Toast.LENGTH_SHORT).show()
-
-            }
-        }
 
         val periodiListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -94,8 +54,6 @@ class Periodo : Fragment() {
         }
 
         database.addValueEventListener(periodiListener)
-        // database.addChildEventListener(childEventListener)
-
 
         // Imposto il layout manager a lineare per avere scrolling in una direzione
         list_periodi.layoutManager = LinearLayoutManager(activity)
