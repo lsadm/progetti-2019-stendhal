@@ -14,9 +14,6 @@ import androidx.navigation.Navigation
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.android.synthetic.main.fragment_login.*
-import kotlinx.android.synthetic.main.fragment_newaccount.okbtn
-import kotlinx.android.synthetic.main.fragment_newaccount.email
-import kotlinx.android.synthetic.main.fragment_newaccount.password
 
 
 
@@ -34,9 +31,8 @@ class login : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-
-
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -44,32 +40,15 @@ class login : Fragment() {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_login, container, false)
     }
+
+
+    //invocata appena viene effettuato il login
     private fun updateUI(usr: FirebaseUser?) {
         if (usr != null) {
-            Toast.makeText(activity, "Utente che ha effettuato il login", Toast.LENGTH_LONG).show()
+            Toast.makeText(activity, "Utente loggato", Toast.LENGTH_LONG).show()
             Navigation.findNavController(view!!).navigateUp() //torno alla schermata precedente
         }
     }
-
-
-    private fun signIn(email: String, password: String) {
-        auth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener(MainActivity()) { task ->
-                if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
-                    Log.d("MainActivity", "signInWithEmail:success")
-                    user = auth.currentUser
-                    updateUI(user)
-                } else {
-                    // If sign in fails, display a message to the user.
-                    Log.w("MainActivity", "signInWithEmail:failure", task.exception)
-                    Toast.makeText(activity, "Autenticazione fallita", Toast.LENGTH_SHORT).show()
-                    updateUI(null)
-                }
-            }
-    }
-
-
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -77,6 +56,7 @@ class login : Fragment() {
         //setto titolo e colore dell'actionbar
         (activity as AppCompatActivity).supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.parseColor("#212121")))
         (activity as AppCompatActivity).supportActionBar?.setTitle("Login")
+
         //nascondo il bottomNavigation
         //val v: View? = activity?.findViewById(R.id.bottomNavigation)
         //v?.visibility = View.GONE
@@ -90,7 +70,7 @@ class login : Fragment() {
                 saveinfo()
                 signIn(email.text.toString(), password.text.toString())
             } else {
-                Toast.makeText(activity, "Email o password troppo breve", Toast.LENGTH_SHORT).show()
+                Toast.makeText(activity, "Non hai inserito email o password", Toast.LENGTH_SHORT).show()
             }
         }
         newaccountbtn.setOnClickListener {
@@ -132,6 +112,22 @@ class login : Fragment() {
         menu?.clear()
     }
 
+    private fun signIn(email: String, password: String) {
+        auth.signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener(MainActivity()) { task ->
+                if (task.isSuccessful) {
+                    // Sign in success, update UI with the signed-in user's information
+                    Log.d("MainActivity", "signInWithEmail:success")
+                    user = auth.currentUser
+                    updateUI(user)
+                } else {
+                    // If sign in fails, display a message to the user.
+                    Log.w("MainActivity", "signInWithEmail:failure", task.exception)
+                    Toast.makeText(activity, "Autenticazione fallita", Toast.LENGTH_SHORT).show()
+                    updateUI(null)
+                }
+            }
+    }
 
 
 }

@@ -57,7 +57,6 @@ class Periodo : Fragment() {
 
         // Imposto il layout manager a lineare per avere scrolling in una direzione
         list_periodi.layoutManager = LinearLayoutManager(activity)
-
     }
 
 }

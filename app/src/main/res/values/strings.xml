@@ -1,11 +1,12 @@
 <resources>
-    <string name="app_name">Stendhal_1</string>
+    <string name="app_name">Stendhal</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="periodo_nome">Nome</string>
     <string name="periodo_anno">Anno</string>
     <string name="image_period">image_period</string>
     <string name="email">E-mail</string>
     <string name="Nome">Nome</string>
+    <string name="Search">Cosa stai cercando ?</string>
     <string name="quadro_nome">Nome</string>
     <string name="quadro_autore">Autore</string>
     <string name="quadro_anno">Anno</string>
@@ -16,6 +17,7 @@
     <string name="Autologin">Accesso automatico</string>
     <string name="Password">Password</string>
     <string name="crea">Crea</string>
+    <string name="Logout">Logout</string>
     <string name="newaccount">Creazione nuovo account</string>
 
 </resources>
