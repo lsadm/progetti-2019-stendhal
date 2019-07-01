@@ -64,7 +64,7 @@ class newaccount : Fragment() {
 
     //memorizza il nuovo utente sul database
     private fun writeNewUser(user : String?, usr : Utente) {
-        database.child("Utenti").child(user.toString()).child("Quadri").child("Account").setValue(usr)
+        database.child("Utenti").child(user.toString()).child("Dati").child("Account").setValue(usr)
     }
 
     //verifica se i campi sono stati riempiti correttamente
@@ -73,15 +73,19 @@ class newaccount : Fragment() {
     }
 
     fun createAccount(email : String, nome : String,password : String) {
-        auth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener(MainActivity()) { task ->
+        auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(MainActivity()) { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "createUserWithEmail:success")
-                    val user = auth.currentUser
-                    Toast.makeText(activity,"Utente registrato con successo",Toast.LENGTH_SHORT).show()
-                    //   updateUI(user)
-                } else {
+                    val user = auth.currentUser?.uid
+                    val usr = Utente(nome,email)
+                    writeNewUser(user, usr) //memorizza sul database
+                    Toast.makeText(context, "Utente registrato con successo", Toast.LENGTH_SHORT).show()
+                    //torno direttamente alla lista giochi e non al login
+                    Navigation.findNavController(view!!).navigateUp()
+                    Navigation.findNavController(view!!).navigateUp()
+                }
+                else {
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "createUserWithEmail:failure", task.exception)
                     Toast.makeText(activity, "Errore nella registrazione",
