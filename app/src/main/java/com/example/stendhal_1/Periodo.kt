@@ -20,6 +20,9 @@ class Periodo : Fragment() {
     private val TAG = "MainActivity"
 
 
+
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -59,8 +62,8 @@ class Periodo : Fragment() {
 
         // Imposto il layout manager a lineare per avere scrolling in una direzione
         list_periodi.layoutManager = LinearLayoutManager(activity)
-    }
 
+    }
     fun domyquery(query: String) {
         val period = ArrayList<Periodo?>()
         val adapter = PeriodiAdapter(period, requireContext())
@@ -69,15 +72,25 @@ class Periodo : Fragment() {
         val childEventListener = object : ChildEventListener {
            override fun onChildAdded(dataSnapshot: DataSnapshot, previousChildName: String?) {
                 Log.d(TAG, "onChildAdded:" + dataSnapshot.key!!)
+               val g = dataSnapshot.getValue(Periodo::class.java)
+               period.add(g)
+
+               adapter.notifyItemInserted(period.indexOf(g))
             }
 
             override fun onChildChanged(dataSnapshot: DataSnapshot, previousChildName: String?) {
                 Log.d(TAG, "onChildChanged: ${dataSnapshot.key}")
+                val g = dataSnapshot.getValue(Periodo::class.java)
+                adapter.notifyDataSetChanged()
 
             }
 
             override fun onChildRemoved(dataSnapshot: DataSnapshot) {
                 Log.d(TAG, "onChildRemoved:" + dataSnapshot.key!!)
+                val g = dataSnapshot.getValue(Periodo::class.java)
+                val index = period.indexOf(g)
+                period.remove(g)
+                adapter.notifyItemRemoved(index)
             }
 
             override fun onChildMoved(dataSnapshot: DataSnapshot, previousChildName: String?) {
@@ -91,7 +104,7 @@ class Periodo : Fragment() {
         }
 
 
-            database.orderByChild("nome").startAt(query).endAt(query + "\uf8ff").addChildEventListener(childEventListener)   //la query effettuerà la ricerca a partire dal nome
+            database.orderByChild("nome").startAt(query).endAt(query+"\uf8ff").addChildEventListener(childEventListener)  //la query effettuerà la ricerca a partire dal nome
 
     }
 }
