@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import com.example.stendhal_1.datamodel.Periodo
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.fragment_periodi.*
 
@@ -32,8 +33,8 @@ class Periodo : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         /*val v: View? = activity?.findViewById(R.id.bottomNavigation)
         v?.visibility=View.VISIBLE*/
-        val period=ArrayList<com.example.stendhal_1.datamodel.Periodo?>()
-        val adapter = PeriodiAdapter(period,requireContext())
+        val period = ArrayList<com.example.stendhal_1.datamodel.Periodo?>()
+        val adapter = PeriodiAdapter(period, requireContext())
         list_periodi.adapter = adapter
 
         //lettura periodi dal database (nodo periodi)
@@ -41,7 +42,8 @@ class Periodo : Fragment() {
             override fun onDataChange(snapshot: DataSnapshot) {
                 period.clear()
                 snapshot.children.forEach {
-                    val periodo : com.example.stendhal_1.datamodel.Periodo = it.getValue(com.example.stendhal_1.datamodel.Periodo::class.java)!!
+                    val periodo: com.example.stendhal_1.datamodel.Periodo =
+                        it.getValue(com.example.stendhal_1.datamodel.Periodo::class.java)!!
                     period.add(periodo)
                 }
                 adapter.notifyDataSetChanged()
@@ -59,4 +61,39 @@ class Periodo : Fragment() {
         list_periodi.layoutManager = LinearLayoutManager(activity)
     }
 
+    fun domyquery(query: String) {
+        val period = ArrayList<Periodo?>()
+        val adapter = PeriodiAdapter(period, requireContext())
+        list_periodi.adapter = adapter
+
+        val childEventListener = object : ChildEventListener {
+           override fun onChildAdded(dataSnapshot: DataSnapshot, previousChildName: String?) {
+                Log.d(TAG, "onChildAdded:" + dataSnapshot.key!!)
+            }
+
+            override fun onChildChanged(dataSnapshot: DataSnapshot, previousChildName: String?) {
+                Log.d(TAG, "onChildChanged: ${dataSnapshot.key}")
+
+            }
+
+            override fun onChildRemoved(dataSnapshot: DataSnapshot) {
+                Log.d(TAG, "onChildRemoved:" + dataSnapshot.key!!)
+            }
+
+            override fun onChildMoved(dataSnapshot: DataSnapshot, previousChildName: String?) {
+                Log.d(TAG, "onChildMoved:" + dataSnapshot.key!!)
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                Log.w(TAG, "postComments:onCancelled", databaseError.toException())
+                Toast.makeText(context, "Failed to load comments.", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+
+            database.orderByChild("nome").startAt(query).endAt(query + "\uf8ff").addChildEventListener(childEventListener)   //la query effettuerà la ricerca a partire dal nome
+
+    }
 }
+
+

@@ -23,6 +23,14 @@
           }
         },
         {
+          "client_id": "228687263678-nv4a2j5tiioiv0si32a28um8kgd7gkuu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.stendhal_1",
+            "certificate_hash": "5a9aaa401546cf9d17a15095d53d08f1089a3a2a"
+          }
+        },
+        {
           "client_id": "228687263678-d98jkhec62opcap8ml21cgkgtajjo1qu.apps.googleusercontent.com",
           "client_type": 3
         }

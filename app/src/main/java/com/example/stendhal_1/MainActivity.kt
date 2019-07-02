@@ -2,6 +2,7 @@ package com.example.stendhal_1
 
 import android.app.SearchManager
 import android.content.Context
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -13,6 +14,7 @@ import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -56,10 +58,10 @@ class MainActivity : AppCompatActivity() {
                 menu?.removeItem(R.id.button_login)
                 return true // KEEP IT TO TRUE OR IT DOESN'T OPEN !!
             }
-            override fun onMenuItemActionCollapse(item: MenuItem): Boolean { //quando clicco su indietro viene ricreato il fragment list
+            override fun onMenuItemActionCollapse(item: MenuItem): Boolean { //quando clicco su indietro nella barra di ricerca viene ricreato il fragment list
                 // Do whatever you need
                 val NavHost  = supportFragmentManager.fragments.get(0) as NavHostFragment
-                val fragment = NavHost.childFragmentManager.fragments.get(0) as Home
+                val fragment = NavHost.childFragmentManager.fragments.get(0) as Periodo
                 invalidateOptionsMenu()
                 supportFragmentManager.beginTransaction().detach(fragment).attach(fragment).commit()
                 return true // OR FALSE IF YOU DIDN'T WANT IT TO CLOSE!
@@ -116,17 +118,17 @@ class MainActivity : AppCompatActivity() {
     }
 
     //funzione invocata per effettuare la ricerca (processa le query)
-   /* override fun onNewIntent(intent: Intent?) {
+   override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
         // Verify the action and get the query
         if (Intent.ACTION_SEARCH == intent!!.action) {
             intent!!.getStringExtra(SearchManager.QUERY)?.also { query ->
                 val NavHost  = supportFragmentManager.fragments.get(0) as NavHostFragment
-                val fragment = NavHost.childFragmentManager.fragments.get(0) as Home
+                val fragment = NavHost.childFragmentManager.fragments.get(0) as Periodo
                 fragment.domyquery(query)
             }
         }
-    }*/
+    }
 
 
 }
