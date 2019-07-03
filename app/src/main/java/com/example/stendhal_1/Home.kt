@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.view.*
 import androidx.navigation.Navigation
+import com.example.stendhal_1.datamodel.bidirezione
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.fragment_home.*
 
@@ -39,7 +40,9 @@ class Home : Fragment() {
             Navigation.findNavController(view).navigate(R.id.action_home_to_periodi)
         }
         imageButton_quadrodelgiorno.setOnClickListener {
-                Navigation.findNavController(view).navigate(R.id.action_home_to_quadro_giorno)
+                bidirezione=true
+                Navigation.findNavController(it).navigate(R.id.action_to_dettaglio_quadro)
+
             }
         imageButton_quadri_artisti_emergenti.setOnClickListener {
                     Navigation.findNavController(view).navigate(R.id.action_home_to_artisti_emergenti)

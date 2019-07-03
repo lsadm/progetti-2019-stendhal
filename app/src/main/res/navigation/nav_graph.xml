@@ -4,17 +4,12 @@
             xmlns:tools="http://schemas.android.com/tools" android:id="@+id/nav_graph"
             app:startDestination="@id/home">
 
-    <fragment android:id="@+id/quadro_giorno" android:name="com.example.stendhal_1.Quadro_giorno"
-              android:label="fragment_quadro_giorno" tools:layout="@layout/fragment_quadro_giorno">
-        <action android:id="@+id/action_to_login" app:destination="@id/login"/>
-    </fragment>
-
     <fragment android:id="@+id/home" android:name="com.example.stendhal_1.Home" android:label="fragment_home"
               tools:layout="@layout/fragment_home">
-        <action android:id="@+id/action_home_to_quadro_giorno" app:destination="@id/quadro_giorno"/>
         <action android:id="@+id/action_home_to_periodi" app:destination="@id/periodi"/>
         <action android:id="@+id/action_home_to_artisti_emergenti" app:destination="@id/artisti_emergenti"/>
         <action android:id="@+id/action_to_login" app:destination="@id/login"/>
+        <action android:id="@+id/action_to_dettaglio_quadro" app:destination="@id/dettaglio_quadro"/>
     </fragment>
 
 
