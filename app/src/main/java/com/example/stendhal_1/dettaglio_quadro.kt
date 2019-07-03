@@ -26,7 +26,8 @@ import com.google.firebase.storage.StorageReference
 class dettaglio_quadro : Fragment() {
 
     private val database = FirebaseDatabase.getInstance().getReference("Quadri")
-    private val database_emergenti = database.child("Quadri_emergenti/1")
+    private var ran = (1..2).random()
+    private val database_emergenti = database.child("Quadri_emergenti/"+ran.toString())
     private var quadro: Quadro?=null
     private val TAG = "MainActivity"
     private val storageRef = FirebaseStorage.getInstance().getReference()
@@ -97,13 +98,7 @@ class dettaglio_quadro : Fragment() {
 
         if (bidirezione==true){
                 database_emergenti.addValueEventListener(quadroemergenteListener)
-                /*nome_quadro.text = quadro?.nome
-                autore_quadro.text = quadro?.autore
-                spiegazione.text = quadro?.spiegazione
-                val annoquadro = String.format("%d", quadro?.anno)
-                anno_quadro.text = annoquadro*/
-                /* val imagRef = storageRef.child("Quadri_emergenti/").child(quadro?.nome.toString() + ".jpg")
-                downloadFoto(imagRef)*/
+                bidirezione=false
         }
 
         picture.setOnClickListener {
