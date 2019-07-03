@@ -8,4 +8,5 @@ class rigaquadroviewholder(view: View) : RecyclerView.ViewHolder(view) {
     val tvNome = view.textNome
     val tvAnno = view.textAnno
     val tvAutore = view.textAutore
+    var Immagine = view.image_quadro
 }

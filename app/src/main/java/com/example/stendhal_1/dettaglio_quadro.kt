@@ -45,7 +45,7 @@ class dettaglio_quadro : Fragment() {
                 //legge i valori del quadro dal database utilizzando l'oggetto passato col bundle
                // val imagRef = storageRef.child(quadro?.periodoapp.toString() + "/").child(gioco?.key.toString() + "/")
                 //val myRef = FirebaseDatabase.getInstance().getReference("Quadri")
-                //val databasemio = myRef.child("Quadri_storici/"+quadro.periodoapp!!)
+
 
             }
         }
