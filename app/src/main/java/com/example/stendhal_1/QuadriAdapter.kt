@@ -29,7 +29,7 @@ class QuadriAdapter(val dataset: ArrayList<Quadro?>, val context: Context) : Rec
     // Invocata per visualizzare all'interno del ViewHolder il dato corrispondente alla riga
     override fun onBindViewHolder(viewHolder: rigaquadroviewholder, position: Int) {
         val quadro = dataset.get(position)
-        val imagRef = storageRef.child("Quadri_storici/Futurismo/Mona_lisa.jpg")
+        val imagRef = storageRef.child("Quadri_storici/").child(quadro?.periodoapp.toString() + "/").child(quadro?.nome.toString() + ".jpg")
         val anno_string = quadro?.anno.toString()
 
 

@@ -80,7 +80,6 @@ class Periodo : Fragment() {
 
             override fun onChildChanged(dataSnapshot: DataSnapshot, previousChildName: String?) {
                 Log.d(TAG, "onChildChanged: ${dataSnapshot.key}")
-                val g = dataSnapshot.getValue(Periodo::class.java)
                 adapter.notifyDataSetChanged()
 
             }
