@@ -126,6 +126,7 @@ class MainActivity : AppCompatActivity() {
                 val NavHost  = supportFragmentManager.fragments.get(0) as NavHostFragment
                 val fragment = NavHost.childFragmentManager.fragments.get(0) as Periodo
                 fragment.domyquery(query)
+
             }
         }
     }

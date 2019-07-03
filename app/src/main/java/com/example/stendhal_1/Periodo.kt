@@ -1,7 +1,10 @@
 package com.example.stendhal_1
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.LayoutInflater
@@ -34,6 +37,8 @@ class Periodo : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        (activity as AppCompatActivity).supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.parseColor("#004097")))
+        (activity as AppCompatActivity).supportActionBar?.setTitle("Stendhal")
         /*val v: View? = activity?.findViewById(R.id.bottomNavigation)
         v?.visibility=View.VISIBLE*/
         val period = ArrayList<com.example.stendhal_1.datamodel.Periodo?>()
@@ -64,6 +69,7 @@ class Periodo : Fragment() {
         list_periodi.layoutManager = LinearLayoutManager(activity)
 
     }
+
     fun domyquery(query: String) {
         val period = ArrayList<Periodo?>()
         val adapter = PeriodiAdapter(period, requireContext())

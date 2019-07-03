@@ -54,7 +54,7 @@ class login : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         //setto titolo e colore dell'actionbar
-        (activity as AppCompatActivity).supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.parseColor("#212121")))
+        (activity as AppCompatActivity).supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.parseColor("silver")))
         (activity as AppCompatActivity).supportActionBar?.setTitle("Login")
 
         //nascondo il bottomNavigation

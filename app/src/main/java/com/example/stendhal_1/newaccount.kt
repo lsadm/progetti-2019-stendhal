@@ -47,7 +47,7 @@ class newaccount : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (activity as AppCompatActivity).supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.parseColor("#212121")))
+        (activity as AppCompatActivity).supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.parseColor("silver")))
         (activity as AppCompatActivity).supportActionBar?.setTitle("Creazione account")
        /* val v: View? = activity?.findViewById(R.id.bottomNavigation)
         v?.visibility=View.GONE*/

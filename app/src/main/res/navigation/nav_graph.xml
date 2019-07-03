@@ -21,6 +21,7 @@
     <fragment android:id="@+id/SingoloPeriodo" android:name="com.example.stendhal_1.SingoloPeriodo"
               android:label="fragment_singolo_periodo" tools:layout="@layout/fragment_singolo_periodo">
         <action android:id="@+id/action_to_dettaglio_quadro" app:destination="@id/dettaglio_quadro"/>
+        <action android:id="@+id/action_to_login" app:destination="@id/login"/>
     </fragment>
 
     <fragment android:id="@+id/periodi" android:name="com.example.stendhal_1.Periodo" android:label="fragment_periodi"
@@ -39,7 +40,9 @@
     <fragment android:id="@+id/newaccount" android:name="com.example.stendhal_1.newaccount"
               android:label="fragment_newaccount" tools:layout="@layout/fragment_newaccount"/>
     <fragment android:id="@+id/dettaglio_quadro" android:name="com.example.stendhal_1.dettaglio_quadro"
-              android:label="fragment_dettaglio_quadro" tools:layout="@layout/fragment_dettaglio_quadro"/>
+              android:label="fragment_dettaglio_quadro" tools:layout="@layout/fragment_dettaglio_quadro">
+        <action android:id="@+id/action_to_login" app:destination="@id/login"/>
+    </fragment>
 
 
 </navigation>
