@@ -1,13 +1,11 @@
 package com.example.stendhal_1
 
 import android.app.AlertDialog
-import android.content.Context
 import android.content.pm.ActivityInfo
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
-import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
@@ -26,8 +24,10 @@ import com.google.firebase.storage.StorageReference
 class dettaglio_quadro : Fragment() {
 
     private val database = FirebaseDatabase.getInstance().getReference("Quadri")
+    private val database_quadriemergenti = database.child("Quadri_emergenti")
+    private var database_emergenti = FirebaseDatabase.getInstance().getReference()
+    private var count = 0
     private var ran = (1..2).random()
-    private val database_emergenti = database.child("Quadri_emergenti/"+ran.toString())
     private var quadro: Quadro?=null
     private val TAG = "MainActivity"
     private val storageRef = FirebaseStorage.getInstance().getReference()
@@ -77,7 +77,7 @@ class dettaglio_quadro : Fragment() {
 
             }
 
-       //PER QUADRO EMERGENTE DEL GIORNO
+        //PER QUADRO EMERGENTE DEL GIORNO
         val quadroemergenteListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val quadrov:Quadro? = snapshot.getValue(Quadro::class.java)
@@ -96,17 +96,34 @@ class dettaglio_quadro : Fragment() {
             }
         }
 
-        if (bidirezione==true){
-                database_emergenti.addValueEventListener(quadroemergenteListener)
-                bidirezione=false
+
+        val ItemDatabase = object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                snapshot.children.forEach {
+                    count++
+                    Log.d("TAG", "Contatore = " + count.toString())
+                }
+                ran = (1..count).random()
+                Log.d("TAG", "Ran = " + ran.toString())
+                database_emergenti = database_quadriemergenti.child(ran.toString())
+
+                if (bidirezione==true){
+                    database_emergenti.addValueEventListener(quadroemergenteListener)
+                    bidirezione=false
+                }
+            }
+            override fun onCancelled(databaseError: DatabaseError) {
+                Log.w(TAG, "postComments:onCancelled", databaseError.toException())
+                Toast.makeText(context, "Failed to load comments.", Toast.LENGTH_SHORT).show()
+            }
         }
+        database_quadriemergenti.addValueEventListener(ItemDatabase)
 
         picture.setOnClickListener {
             zoomFoto(picture)
         }
 
     }
-
 
 
     private fun downloadFoto(imagRef : StorageReference) {

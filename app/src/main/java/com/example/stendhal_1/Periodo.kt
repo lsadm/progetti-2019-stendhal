@@ -17,13 +17,11 @@ import kotlinx.android.synthetic.main.fragment_periodi.*
 
 
 class Periodo : Fragment() {
+
     //attributi
 
     private val database = FirebaseDatabase.getInstance().getReference("Periodo")
     private val TAG = "MainActivity"
-
-
-
 
 
     override fun onCreateView(
@@ -47,7 +45,6 @@ class Periodo : Fragment() {
 
         //lettura periodi dal database (nodo periodi)
 
-
         val periodiListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 period.clear()
@@ -69,7 +66,6 @@ class Periodo : Fragment() {
 
         // Imposto il layout manager a lineare per avere scrolling in una direzione
         list_periodi.layoutManager = LinearLayoutManager(activity)
-
     }
 
     fun domyquery(query: String) {
