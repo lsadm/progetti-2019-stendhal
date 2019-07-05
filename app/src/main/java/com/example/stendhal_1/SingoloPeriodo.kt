@@ -5,6 +5,7 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.*
@@ -26,19 +27,7 @@ class SingoloPeriodo : Fragment() {
 
 
 
-   /* override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        super.onCreateOptionsMenu(menu, inflater)
-        menu?.clear()
-        val usr = FirebaseAuth.getInstance().currentUser
-        inflater?.inflate(R.menu.search, menu)
-        if(usr==null) { //se non è loggato esce login
-            inflater?.inflate(R.menu.button_login, menu)
 
-        }
-        else { //altrimenti logout
-            inflater?.inflate(R.menu.button_logout, menu)
-        }
-    }*/
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -83,6 +72,7 @@ class SingoloPeriodo : Fragment() {
 
                 databasemio.addValueEventListener(quadrilistener) //////////////RIVEDIIIII
 
+                list_quadri.addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
                 // Imposto il layout manager a lineare per avere scrolling in una direzione
                 list_quadri.layoutManager = LinearLayoutManager(activity)
 

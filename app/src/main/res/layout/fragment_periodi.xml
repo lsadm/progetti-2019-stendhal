@@ -12,5 +12,6 @@
             android:id="@+id/list_periodi" app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent" android:scrollbars="vertical"
+
             tools:listitem="@layout/riga_periodo"/>
 </android.support.constraint.ConstraintLayout>

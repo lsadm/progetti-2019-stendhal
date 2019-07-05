@@ -5,6 +5,7 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.LayoutInflater
@@ -65,6 +66,8 @@ class Periodo : Fragment() {
         }
 
         database.addValueEventListener(periodiListener)
+
+
 
         // Imposto il layout manager a lineare per avere scrolling in una direzione
         list_periodi.layoutManager = LinearLayoutManager(activity)

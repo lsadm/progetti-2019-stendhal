@@ -27,6 +27,8 @@
     <fragment android:id="@+id/artisti_emergenti" android:name="com.example.stendhal_1.artisti_emergenti"
               android:label="fragment_artisti_emergenti" tools:layout="@layout/fragment_artisti_emergenti">
         <action android:id="@+id/action_to_login" app:destination="@id/login"/>
+        <action android:id="@+id/action_to_fragment_Artista" app:destination="@id/fragment_DiventaPittore"/>
+        <action android:id="@+id/action_artisti_emergenti_to_dettaglio_quadro" app:destination="@id/dettaglio_quadro"/>
     </fragment>
     <fragment android:id="@+id/login" android:name="com.example.stendhal_1.login" android:label="fragment_login"
               tools:layout="@layout/fragment_login">
@@ -38,6 +40,13 @@
               android:label="fragment_dettaglio_quadro" tools:layout="@layout/fragment_dettaglio_quadro">
         <action android:id="@+id/action_to_login" app:destination="@id/login"/>
     </fragment>
+    <fragment android:id="@+id/fragment_DiventaPittore" android:name="com.example.stendhal_1.Fragment_Artista"
+              android:label="fragment_DiventaPittore" tools:layout="@layout/fragment_fragment__artista">
+        <action android:id="@+id/action_fragment_DiventaPittore_to_add_quadroemergente"
+                app:destination="@id/add_quadroemergente"/>
+    </fragment>
+    <fragment android:id="@+id/add_quadroemergente" android:name="com.example.stendhal_1.Add_quadroemergente"
+              android:label="fragment_add_quadroemergente" tools:layout="@layout/fragment_add_quadroemergente"/>
 
 
 </navigation>

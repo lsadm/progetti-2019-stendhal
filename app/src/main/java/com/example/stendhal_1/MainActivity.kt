@@ -143,6 +143,10 @@ class MainActivity : AppCompatActivity() {
                     val fragment= NavHost.childFragmentManager.fragments.get(0) as SingoloPeriodo
                     fragment.domyquery2(query)
                 }
+                else if (choosequery==2)    {
+                    val fragment= NavHost.childFragmentManager.fragments.get(0) as artisti_emergenti
+                    fragment.domyquery3(query)
+                }
 
                 }
             }
