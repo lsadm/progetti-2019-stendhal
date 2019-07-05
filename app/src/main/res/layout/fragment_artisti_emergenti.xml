@@ -6,8 +6,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" android:id="@+id/coordinatorLayout" tools:layout_editor_absoluteY="81dp">
     <android.support.v7.widget.RecyclerView
-            android:layout_width="407dp"
-            android:layout_height="581dp"
+            android:layout_width="405dp"
+            android:layout_height="585dp"
             android:id="@+id/lista_quadri_emergenti" tools:listitem="@layout/riga_quadro"
             android:scrollbars="vertical"
             app:layout_constraintTop_toTopOf="parent" android:layout_marginBottom="8dp"
@@ -21,11 +21,14 @@
             app:layout_constraintGuide_percent="0.8"
     />
     <ImageButton
-            android:layout_width="409dp"
-            android:layout_height="147dp" app:srcCompat="@drawable/bottone2" android:id="@+id/imageButton2"
+            android:layout_width="413dp"
+            android:layout_height="143dp" app:srcCompat="@drawable/bottone2" android:id="@+id/imageButton2"
             android:background="#B4C6E7"
-            android:layout_marginTop="3dp"
-            app:layout_constraintTop_toBottomOf="@+id/lista_quadri_emergenti"
             app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="2dp"
-            app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="29dp" app:layout_constraintTop_toBottomOf="@+id/lista_quadri_emergenti"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
+            app:layout_constraintVertical_bias="1.0"
+            app:layout_constraintHorizontal_bias="0.153"/>
 </android.support.constraint.ConstraintLayout>
+
