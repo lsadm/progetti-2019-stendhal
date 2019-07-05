@@ -12,6 +12,7 @@ import android.widget.SearchView
 import android.widget.Toast
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
+import com.example.stendhal_1.datamodel.choosequery
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 
@@ -61,9 +62,19 @@ class MainActivity : AppCompatActivity() {
             override fun onMenuItemActionCollapse(item: MenuItem): Boolean { //quando clicco su indietro nella barra di ricerca viene ricreato il fragment list
                 // Do whatever you need
                 val NavHost  = supportFragmentManager.fragments.get(0) as NavHostFragment
+                if (choosequery==0)
+                {
                 val fragment = NavHost.childFragmentManager.fragments.get(0) as Periodo
-                invalidateOptionsMenu()
-                supportFragmentManager.beginTransaction().detach(fragment).attach(fragment).commit()
+                    invalidateOptionsMenu()
+                    supportFragmentManager.beginTransaction().detach(fragment).attach(fragment).commit()
+                }
+                else if(choosequery==1)
+                {
+                    val fragment = NavHost.childFragmentManager.fragments.get(0) as SingoloPeriodo
+                    invalidateOptionsMenu()
+                    supportFragmentManager.beginTransaction().detach(fragment).attach(fragment).commit()
+                }
+
                 return true // OR FALSE IF YOU DIDN'T WANT IT TO CLOSE!
             }
         })
@@ -124,14 +135,22 @@ class MainActivity : AppCompatActivity() {
         if (Intent.ACTION_SEARCH == intent!!.action) {
             intent!!.getStringExtra(SearchManager.QUERY)?.also { query ->
                 val NavHost  = supportFragmentManager.fragments.get(0) as NavHostFragment
-                val fragment = NavHost.childFragmentManager.fragments.get(0) as Periodo
-                fragment.domyquery(query)
+                if (choosequery==0) {
+                    val fragment = NavHost.childFragmentManager.fragments.get(0) as Periodo
+                    fragment.domyquery(query)
+                }
+                else if (choosequery==1) {
+                    val fragment= NavHost.childFragmentManager.fragments.get(0) as SingoloPeriodo
+                    fragment.domyquery2(query)
+                }
 
+                }
             }
+
         }
     }
 
 
-}
+
 
 

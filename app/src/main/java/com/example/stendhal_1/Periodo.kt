@@ -12,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.example.stendhal_1.datamodel.Periodo
+import com.example.stendhal_1.datamodel.choosequery
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.fragment_periodi.*
 
@@ -28,6 +29,7 @@ class Periodo : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        choosequery=0
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_periodi, container, false)
     }
