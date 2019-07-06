@@ -60,7 +60,7 @@ class SingoloPeriodo : Fragment() {
                         }
                         adapter.notifyDataSetChanged()
                     }
-
+//kssodkoskd
                     override fun onCancelled(databaseError: DatabaseError) {
                         Log.w(TAG, "postComments:onCancelled", databaseError.toException())
                         Toast.makeText(context, "Failed to load comments.", Toast.LENGTH_SHORT).show()
