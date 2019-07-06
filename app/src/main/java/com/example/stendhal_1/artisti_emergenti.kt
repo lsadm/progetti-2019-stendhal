@@ -1,9 +1,7 @@
 package com.example.stendhal_1
 
-import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
@@ -13,7 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import com.example.stendhal_1.datamodel.Quadro
+import androidx.navigation.Navigation
 import com.example.stendhal_1.datamodel.QuadroEmergente
 import com.example.stendhal_1.datamodel.choosequery
 import com.google.firebase.auth.FirebaseAuth
@@ -93,6 +91,15 @@ class artisti_emergenti : Fragment() {
 
         // Imposto il layout manager a lineare per avere scrolling in una direzione
         lista_quadri_emergenti.layoutManager = LinearLayoutManager(activity)
+
+
+        imageDiventa_Artista.setOnClickListener {
+            if (auth.currentUser != null) {
+                Navigation.findNavController(it).navigate(R.id.action_to_fragment_Artista)
+            } else {
+                Navigation.findNavController(it).navigate(R.id.action_to_login)
+            }
+        }
     }
 
     //viene invocata nell'activity per effettuare le ricerche (l'activity passa la query come parametro)

@@ -68,7 +68,7 @@ class login : Fragment() {
         okbtn.setOnClickListener {
             if (validcamp()) {
                 saveinfo()
-                signIn(email.text.toString(), password.text.toString())
+                signIn(n_opere.text.toString(), password.text.toString())
             } else {
                 Toast.makeText(activity, "Non hai inserito email o password", Toast.LENGTH_SHORT).show()
             }
@@ -80,13 +80,13 @@ class login : Fragment() {
 
 
     private fun validcamp() : Boolean{
-        return (email.text.toString().isNotEmpty() && password.text.toString().isNotEmpty())
+        return (n_opere.text.toString().isNotEmpty() && password.text.toString().isNotEmpty())
     }
 
     //salva i campi inseriti dall'utente
     private fun saveinfo() {
         val editor = sharedPref.edit()
-        val username = email.text.toString()
+        val username = n_opere.text.toString()
         val password = password.text.toString()
         val autoLogin = chkAutoLogin.isChecked
 
@@ -102,7 +102,7 @@ class login : Fragment() {
         val pass = sharedPref.getString(PREF_PASSWORD,"")
         val autoLogin = sharedPref.getBoolean(PREF_AUTOLOGIN, false)
 
-        email.setText(username)
+        n_opere.setText(username)
         password.setText(pass)
         chkAutoLogin.isChecked = autoLogin
     }

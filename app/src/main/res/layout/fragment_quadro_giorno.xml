@@ -11,7 +11,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:text="@string/hello_blank_fragment"
-            android:id="@+id/textView" app:layout_constraintEnd_toEndOf="parent"
+            android:id="@+id/Info" app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
 

@@ -2,7 +2,6 @@ package com.example.stendhal_1
 
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
@@ -53,7 +52,7 @@ class newaccount : Fragment() {
         v?.visibility=View.GONE*/
         okbtn.setOnClickListener{
             if (verificacampi()) {
-                createAccount(email.text.toString(),nome.text.toString(),password.text.toString())
+                createAccount(n_opere.text.toString(),nome.text.toString(),password.text.toString())
             }
             else{
                 Toast.makeText(activity,"Email o password troppo breve",Toast.LENGTH_SHORT).show()
@@ -69,7 +68,7 @@ class newaccount : Fragment() {
 
     //verifica se i campi sono stati riempiti correttamente
     private fun verificacampi() : Boolean{
-        return email.text.toString().isNotEmpty() && password.text.toString().isNotEmpty() && nome.text.toString().isNotEmpty()
+        return n_opere.text.toString().isNotEmpty() && password.text.toString().isNotEmpty() && nome.text.toString().isNotEmpty()
     }
 
     fun createAccount(email : String, nome : String,password : String) {
