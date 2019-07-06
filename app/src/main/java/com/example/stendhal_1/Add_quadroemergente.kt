@@ -152,7 +152,7 @@ class Add_quadroemergente : Fragment() {
                     )
 
                     Toast.makeText(activity, "Caricamento in corso", Toast.LENGTH_SHORT).show()
-                    //SE VI E'
+
                     if (foto_fatte != 0) caricaFoto(key.toString()) //le carico
                     else Navigation.findNavController(view!!).navigateUp() //altrimenti torno semplicemente indietro
                 }
