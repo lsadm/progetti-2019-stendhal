@@ -46,6 +46,7 @@
               android:label="fragment_Artista" tools:layout="@layout/fragment_fragment__artista">
         <action android:id="@+id/action_to_add_quadroemergente"
                 app:destination="@id/add_quadroemergente"/>
+        <action android:id="@+id/action_to_dettaglio_quadro" app:destination="@id/dettaglio_quadro"/>
     </fragment>
     <fragment android:id="@+id/add_quadroemergente" android:name="com.example.stendhal_1.Add_quadroemergente"
               android:label="fragment_add_quadroemergente" tools:layout="@layout/fragment_add_quadroemergente">

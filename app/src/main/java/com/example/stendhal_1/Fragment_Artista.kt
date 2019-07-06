@@ -26,6 +26,7 @@ class Fragment_Artista : Fragment() {
         private val database = FirebaseDatabase.getInstance().getReference("Utenti")
         private val auth = FirebaseAuth.getInstance()
         private val user = FirebaseAuth.getInstance().currentUser?.uid //Questo è l'id dell'utente
+        private var singoloutente:Utente? = null
 
         //metodi
 
@@ -66,7 +67,7 @@ class Fragment_Artista : Fragment() {
             //setta la textView annunci col valore di cont, inizialmente a 0
             n_opere.text=cont.toString()
 
-            //Vari listener (di Firebase) per aggiornare dinamicamente la recycleView
+            //Vari listener (di Firebase) per aggiornare dinamicamente la recyclerView
             val childEventListener = object : ChildEventListener {
                 //inserimento elemento
                 override fun onChildAdded(dataSnapshot: DataSnapshot, previousChildName: String?) {
@@ -119,9 +120,7 @@ class Fragment_Artista : Fragment() {
                 //scarico dal database le informazioni del singolo utente e le aggiungo in una lista
                 dataUser()
                 //chiamata al listener per caricare e modificare la recycleView
-                database.child(user.toString()).child("Mie_opere")
-                    .addChildEventListener(childEventListener) //il database da cui chiamo il listener fa variare il sottonodo del database che vado a leggere
-
+                database.child(user.toString()).child("Mie_opere").addChildEventListener(childEventListener) //il database da cui chiamo il listener fa variare il sottonodo del database che vado a leggere
             }
             //l'utente non è loggato quindi viene reindirizzato al login
             else {
@@ -139,26 +138,20 @@ class Fragment_Artista : Fragment() {
 
         //scarica i dati dell'utente dal database
         private fun dataUser() {
-            val myRef = FirebaseDatabase.getInstance().getReference("users").child(user.toString()).child("Dati")
-            fun loadList(callback: (list: List<Utente>) -> Unit) {
-                myRef.addListenerForSingleValueEvent(object : ValueEventListener {
-                    override fun onCancelled(snapshotError: DatabaseError) {}
-                    override fun onDataChange(snapshot: DataSnapshot) {
-                        val list: MutableList<Utente> = mutableListOf()
-                        val children = snapshot!!.children
-                        children.forEach {
-                            list.add(it.getValue(Utente::class.java)!!)
-                        }
-                        callback(list)
-                    }
-                })
+            val leggoemail = object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val ut:Utente? = snapshot.getValue(Utente::class.java)
+                    singoloutente=ut
+                    emailpersonale.text = singoloutente?.email
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    Log.w(TAG, "postComments:onCancelled", databaseError.toException())
+                    Toast.makeText(context, "Failed to load comments.", Toast.LENGTH_SHORT).show()
+                }
             }
-            //carico le textView usando gli elementi della lista
-            loadList {
-                try {
-                    n_opere.text = it[0].email.toString()
-                }catch (e: Exception) {}
-            }
+            database.child(user.toString()).child("Dati/Account").addValueEventListener(leggoemail)
+
         }
     }
 
