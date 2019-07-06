@@ -16,7 +16,7 @@
     <string name="Username">Username</string>
     <string name="Autologin">Accesso automatico</string>
     <string name="Password">Password</string>
-    <string name="Inserisci">Inserire foto</string>
+    <string name="Inserisci">Inserire la foto del quadro:</string>
     <string name="crea">Crea</string>
     <string name="Logout">Logout</string>
     <string name="newaccount">Creazione nuovo account</string>

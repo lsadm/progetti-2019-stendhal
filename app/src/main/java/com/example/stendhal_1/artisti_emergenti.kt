@@ -105,6 +105,7 @@ class artisti_emergenti : Fragment() {
     //viene invocata nell'activity per effettuare le ricerche (l'activity passa la query come parametro)
     fun domyquery3(query: String) {
         val quadr_emer = ArrayList<QuadroEmergente?>()
+        val keys = ArrayList<String>()
         val adapter = AdapterQuadri_emergenti(quadr_emer, requireContext())
         lista_quadri_emergenti.adapter = adapter
 
@@ -113,12 +114,15 @@ class artisti_emergenti : Fragment() {
                 Log.d(TAG, "onChildAdded:" + dataSnapshot.key!!)
                 val g = dataSnapshot.getValue(QuadroEmergente::class.java)
                 quadr_emer.add(g)
-
+                keys.add(dataSnapshot.key.toString()) //Aggiungo le varie chiavi in un ArrayList
                 adapter.notifyItemInserted(quadr_emer.indexOf(g))
             }
 
             override fun onChildChanged(dataSnapshot: DataSnapshot, previousChildName: String?) {
                 Log.d(TAG, "onChildChanged: ${dataSnapshot.key}")
+                val g = dataSnapshot.getValue(QuadroEmergente::class.java)
+                val index = keys.indexOf(dataSnapshot.key.toString()) //ottengo l'indice del quadro aggiornato
+                quadr_emer[index]= g
                 adapter.notifyDataSetChanged()
 
             }
@@ -143,5 +147,6 @@ class artisti_emergenti : Fragment() {
         database_emergente.orderByChild("nome").startAt(query).endAt(query+"\uf8ff").addChildEventListener(childEventListener)
 
     }
+
 }
 

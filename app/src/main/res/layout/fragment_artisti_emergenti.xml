@@ -6,8 +6,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" android:id="@+id/coordinatorLayout" tools:layout_editor_absoluteY="81dp">
     <android.support.v7.widget.RecyclerView
-            android:layout_width="410dp"
-            android:layout_height="466dp"
+            android:layout_width="409dp"
+            android:layout_height="454dp"
             android:id="@+id/lista_quadri_emergenti" tools:listitem="@layout/riga_quadro"
             android:scrollbars="vertical"
             app:layout_constraintTop_toTopOf="parent" android:layout_marginBottom="8dp"
@@ -21,7 +21,7 @@
             app:layout_constraintGuide_percent="0.8"
     />
     <ImageButton
-            android:layout_width="440dp"
+            android:layout_width="418dp"
             android:layout_height="148dp" app:srcCompat="@drawable/bottone2" android:id="@+id/imageDiventa_Artista"
             android:background="#B4C6E7"
             android:layout_marginTop="3dp"
