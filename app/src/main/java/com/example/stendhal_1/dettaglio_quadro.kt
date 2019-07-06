@@ -1,6 +1,7 @@
 package com.example.stendhal_1
 
 import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.pm.ActivityInfo
 import android.graphics.BitmapFactory
 import android.graphics.Color
@@ -13,6 +14,7 @@ import android.util.Log
 import android.view.*
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.navigation.Navigation
 import com.example.stendhal_1.datamodel.Quadro
 import com.example.stendhal_1.datamodel.QuadroEmergente
 import com.example.stendhal_1.datamodel.bidirezione
@@ -24,9 +26,12 @@ import com.google.firebase.storage.StorageReference
 
 class dettaglio_quadro : Fragment() {
 
+    private val auth = FirebaseAuth.getInstance()
     private val database = FirebaseDatabase.getInstance().getReference("Quadri")
     private val database_quadriemergenti = database.child("Quadri_emergenti")
     private var database_emergenti = FirebaseDatabase.getInstance().getReference()
+    private val nodo = FirebaseDatabase.getInstance().reference
+    private val id = auth.currentUser?.uid.toString()
     private var count = 0
     private var ran = (1..2).random()
     private var quadro: Quadro?=null
@@ -41,23 +46,44 @@ class dettaglio_quadro : Fragment() {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_dettaglio_quadro, container, false)
     }
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when(item?.itemId) {
+            R.id.Cestino  -> {
+                //finestra di dialog per eliminare gioco
+                val builder = AlertDialog.Builder(activity as AppCompatActivity)
+                builder.setTitle(R.string.AlertMessage)
+                builder.setNegativeButton(R.string.NegativeButton, DialogInterface.OnClickListener { _, which -> }) //chiude la finestra
+                builder.setPositiveButton(R.string.PositiveButton, DialogInterface.OnClickListener { _, which ->
+                    deleteGame() //elimina il gioco
+                    Navigation.findNavController(view!!).navigateUp() //e torna indietro
+                })
+                builder.show() //mostra la finestra
+            }
+            R.id.Modifica -> {
+                //crea un bundle e lo passa al fragment inserimento, poi lì verrà modificato
+                val b = Bundle()
+                b.putParcelable("quadro",quadroemer)
+                Navigation.findNavController(view!!).navigate(R.id.action_to_add_quadroemergente,b)
+            }
+            else -> return false
+        }
+        return true
+    }
 
 
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        super.onCreateOptionsMenu(menu, inflater)
-        menu?.clear()
-        val usr = FirebaseAuth.getInstance().currentUser
-        if(usr==null) { //se non è loggato esce login
-            inflater?.inflate(R.menu.button_login, menu)
 
-        }
-        else { //altrimenti logout
-            inflater?.inflate(R.menu.button_logout, menu)
-        }
-    }
+            super.onCreateOptionsMenu(menu, inflater)
+            menu?.clear()
+            if (quadroemer?.id == id) {
+                inflater?.inflate(R.menu.menu_modifica, menu) //viene mostrato solo il menu modifica
+
+
+    }}
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setHasOptionsMenu(true)
         (activity as AppCompatActivity).supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.parseColor("#004097")))
         (activity as AppCompatActivity).supportActionBar?.setTitle("Stendhal")
         setHasOptionsMenu(true)
@@ -139,6 +165,9 @@ class dettaglio_quadro : Fragment() {
     }
 
 
+
+
+
     private fun downloadFoto(imagRef : StorageReference) {
             imagRef.getBytes(Long.MAX_VALUE).addOnSuccessListener {
                 // Use the bytes to display the image
@@ -148,6 +177,15 @@ class dettaglio_quadro : Fragment() {
                 // Handle any errors
             }
         }
+
+
+
+    private fun deleteGame() {
+        database_quadriemergenti.child(quadroemer!!.key.toString()).removeValue()
+        nodo.child("Utenti").child(auth.currentUser!!.uid).child("Mie_opere").child(quadroemer!!.key.toString()).removeValue()
+        storageRef.child("Quadri_emergenti").child(quadroemer!!.key.toString()).child("Image").delete()
+
+    }
 
     private fun zoomFoto(img : ImageView) {
         val dialogBuilder = AlertDialog.Builder(context)

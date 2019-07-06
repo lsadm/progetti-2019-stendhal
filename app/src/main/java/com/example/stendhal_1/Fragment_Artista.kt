@@ -109,7 +109,7 @@ class Fragment_Artista : Fragment() {
             lista_quadriemergenti.layoutManager = LinearLayoutManager(activity)
             floatingActionButton.setOnClickListener {
                 if (auth.currentUser != null) {
-                    Navigation.findNavController(it).navigate(R.id.action_fragment_DiventaPittore_to_add_quadroemergente)
+                    Navigation.findNavController(it).navigate(R.id.action_to_add_quadroemergente)
                 } else {
                     Navigation.findNavController(it).navigate(R.id.action_to_login)
                 }
