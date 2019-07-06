@@ -1,6 +1,7 @@
 package com.example.stendhal_1
 
 import android.app.Activity
+import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ActivityInfo
@@ -13,14 +14,19 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.*
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.navigation.Navigation
 import com.example.stendhal_1.datamodel.Quadro
 import com.example.stendhal_1.datamodel.QuadroEmergente
+import com.example.stendhal_1.datamodel.Utente
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.fragment_add_quadroemergente.*
 import java.io.ByteArrayOutputStream
@@ -64,9 +70,7 @@ class Add_quadroemergente : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         activity?.requestedOrientation=(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR) //impedisce la rotazione dello schermo
 
-
-        //in inserimento ci andare per inserire un gioco oppure per modificarlo, se devo modificarlo allora verrà passato un bundle
-        //contenente il gioco da modificare
+        //Nel caso in cui si voglia modificare un quadro già esistente:
         arguments?.let{
             //modifico il gioco
             mod = 1
@@ -82,13 +86,17 @@ class Add_quadroemergente : Fragment() {
                 (activity as AppCompatActivity).supportActionBar?.setTitle("Modifica la tua opera")
             }
         }
-        //se non devo modificare il gioco mostro il colore di default e la scritta inserimento
+
+
+        //Nel caso in cui debba inserire un nuovo quadro:
         if(mod!=1) {
             (activity as AppCompatActivity).supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.parseColor("#004097")))
             (activity as AppCompatActivity).supportActionBar?.setTitle("Aggiungi la tua opera")
         }
+
         // Imposta il funzionamento del pulsante per l'acqisizione dell'immagine
         val takePhoto = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+
         foto_quadro.setOnClickListener {
             // Creo un intent di tipo implicito per acquisire l'immagine
             takePhoto.resolveActivity(activity!!.packageManager)?.also {
@@ -97,50 +105,114 @@ class Add_quadroemergente : Fragment() {
         }
     }
 
-    //quando si clicca il pulsante inserimento in alto a destra vengono salvati tutti i dati del gioco inseriti
+    //Quando si clicca il tick_button:
         override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         val nome = Nome.text.toString()
-        val autoredatabase = autore
-        val anno = anno.text.toString()
-        val spiegazione = Spiegazione.text.toString()
         val auth = FirebaseAuth.getInstance()
         val id = auth.currentUser?.uid
+
+        ///
+        val leggiautore = object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val user: Utente? = snapshot.getValue(Utente::class.java)
+                val autore_temp = user?.nome
+                autore = autore_temp
+                val anno = anno.text.toString()
+                val spiegazione = Spiegazione.text.toString()
+                var key: String?
+                quadro_emergente?.nome = nome
+                quadro_emergente?.spiegazione = spiegazione
+                quadro_emergente?.anno = anno.toInt()
+
+                //INSERISCO IL QUADRO ALL'INTERNO DEL DATABASE - SEZIONE QUADRI_EMERGENTI
+
+                if (nome.length > 0 && spiegazione.length > 0 && anno.toInt() > 0 && id != null) {
+                    key = get_key()
+                    database.child("Quadri/Quadri_emergenti").child(key.toString()).setValue(
+                        QuadroEmergente(
+                            nome,
+                            autore,
+                            anno.toInt(),
+                            spiegazione,
+                            key,
+                            id
+                        )
+                    )
+
+                    ////INSERISCO IL QUADRO ALL'INTERNO DEL DATABASE - SEZIONE SINGOLOUTENTE/MIE_OPERE
+                    database.child("Utenti").child(id).child("Mie_opere").child(key.toString()).setValue(
+                        QuadroEmergente(
+                            nome,
+                            autore,
+                            anno.toInt(),
+                            spiegazione,
+                            key,
+                            id
+                        )
+                    )
+
+                    Toast.makeText(activity, "Caricamento in corso", Toast.LENGTH_SHORT).show()
+                    //SE VI E'
+                    if (foto_fatte != 0) caricaFoto(key.toString()) //le carico
+                    else Navigation.findNavController(view!!).navigateUp() //altrimenti torno semplicemente indietro
+                }
+                //se alcuni campi sono vuoti non posso caricare il gioco
+                else Toast.makeText(activity, "Riempire campi", Toast.LENGTH_SHORT).show()
+
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                Log.w(TAG, "postComments:onCancelled", databaseError.toException())
+                Toast.makeText(context, "Failed to load comments.", Toast.LENGTH_SHORT).show()
+            }
+        }
+        //
+        //
+        database.child("Utenti/" + id + "/Dati/Account/").addValueEventListener(leggiautore)
+
+        if (mod == 1) {
+
+        val anno = anno.text.toString()
+        val spiegazione = Spiegazione.text.toString()
         var key: String?
         quadro_emergente?.nome = nome
         quadro_emergente?.spiegazione = spiegazione
-        quadro_emergente?.anno= anno.toInt()
+        quadro_emergente?.anno = anno.toInt()
 
         //inserisco il quadro nel catologo dei quadri degli artisti emergenti
-        if (nome.length > 0 && spiegazione.length > 0 && anno.toInt() > 0 && id != null) {
-            key = get_key()
-            database.child("Quadri/Quadri_emergenti").child(key.toString()).setValue(
-                QuadroEmergente(
-                    nome,
-                    autoredatabase,
-                    anno.toInt(),
-                    spiegazione,
-                    key,
-                    id
+
+            if (nome.length > 0 && spiegazione.length > 0 && anno.toInt() > 0 && id != null) {
+                key = get_key()
+                database.child("Quadri/Quadri_emergenti").child(key.toString()).setValue(
+                    QuadroEmergente(
+                        nome,
+                        autore,
+                        anno.toInt(),
+                        spiegazione,
+                        key,
+                        id
+                    )
+                ) //e nell'area personale dell'utente
+                //in quel percorso con identificativo unico inserisco il gioco. Rappresenta la lista di giochi visibile a tutti
+                database.child("Utenti").child(id).child("Mie_opere").child(key.toString()).setValue(
+                    QuadroEmergente(
+                        nome,
+                        autore,
+                        anno.toInt(),
+                        spiegazione,
+                        key,
+                        id
+                    )
                 )
-            ) //e nell'area personale dell'utente
-            //in quel percorso con identificativo unico inserisco il gioco. Rappresenta la lista di giochi visibile a tutti
-            database.child("Utenti").child(id).child("Mie_opere").child(key.toString()).setValue(
-                QuadroEmergente(
-                    nome,
-                    autoredatabase,
-                    anno.toInt(),
-                    spiegazione,
-                    key,
-                    id
-                )
-            )
-            Toast.makeText(activity, "Caricamento in corso", Toast.LENGTH_SHORT).show()
-            //se ci sono foto da caricare
-            if (foto_fatte != 0) caricaFoto(key.toString()) //le carico
-            else Navigation.findNavController(view!!).navigateUp() //altrimenti torno semplicemente indietro
+                Toast.makeText(activity, "Caricamento in corso", Toast.LENGTH_SHORT).show()
+                //se ci sono foto da caricare
+                if (foto_fatte != 0) caricaFoto(key.toString()) //le carico
+                else Navigation.findNavController(view!!).navigateUp() //altrimenti torno semplicemente indietro
+            }
+            //se alcuni campi sono vuoti non posso caricare il gioco
+            else Toast.makeText(activity, "Riempire campi", Toast.LENGTH_SHORT).show()
+
         }
-        //se alcuni campi sono vuoti non posso caricare il gioco
-        else Toast.makeText(activity, "Riempire campi", Toast.LENGTH_SHORT).show()
 
         return super.onOptionsItemSelected(item)
     }
@@ -160,9 +232,8 @@ class Add_quadroemergente : Fragment() {
 
     //carica le foto sul database
     private fun caricaFoto(key : String){
-            val mountainsRef = storageRef.child("Quadri_emergenti")
-                //.child(key).child("Image")
-            val bitmap = (foto?.drawable as? BitmapDrawable)?.bitmap
+            val mountainsRef = storageRef.child("Quadri_emergenti").child(key).child("Image")
+            val bitmap = (foto_quadro?.drawable as? BitmapDrawable)?.bitmap
             val baos = ByteArrayOutputStream()
             bitmap?.compress(Bitmap.CompressFormat.JPEG,100, baos)
             val data = baos.toByteArray()
@@ -208,9 +279,4 @@ class Add_quadroemergente : Fragment() {
             return quadro_emergente?.key
         }
     }
-
-
-
-
-
 }

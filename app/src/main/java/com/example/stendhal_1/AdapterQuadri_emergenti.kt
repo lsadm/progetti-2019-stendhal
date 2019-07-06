@@ -30,7 +30,7 @@ import com.example.stendhal_1.datamodel.QuadroEmergente
         // Invocata per visualizzare all'interno del ViewHolder il dato corrispondente alla riga
         override fun onBindViewHolder(viewHolder: rigaquadroviewholder, position: Int) {
             val quadro = dataset.get(position)
-            val imagRef = storageRef.child("Quadri_emergenti/").child(quadro?.nome.toString() + ".jpg")
+            val imagRef = storageRef.child("Quadri_emergenti").child(quadro?.key.toString()).child("Image")
             val anno_string = quadro?.anno.toString()
 
 
@@ -40,13 +40,14 @@ import com.example.stendhal_1.datamodel.QuadroEmergente
             //scarica la foto dal database e la setta nella riga
             imagRef.downloadUrl.addOnSuccessListener {
                 GlideApp.with(context).load(it).diskCacheStrategy(DiskCacheStrategy.AUTOMATIC).into(viewHolder.Immagine)
+            }
 
                 viewHolder.itemView.setOnClickListener {
                     //Cosa fare quando seleziono una view
                     val b = Bundle()
-                    b.putParcelable("quadro", quadro)
+                    b.putParcelable("quadroemer", quadro)
                     Navigation.findNavController(it).navigate(R.id.action_to_dettaglio_quadro, b)
                 }
+
             }
         }
-    }

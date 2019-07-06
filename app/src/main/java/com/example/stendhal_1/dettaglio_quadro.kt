@@ -14,6 +14,7 @@ import android.view.*
 import android.widget.ImageView
 import android.widget.Toast
 import com.example.stendhal_1.datamodel.Quadro
+import com.example.stendhal_1.datamodel.QuadroEmergente
 import com.example.stendhal_1.datamodel.bidirezione
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
@@ -29,6 +30,7 @@ class dettaglio_quadro : Fragment() {
     private var count = 0
     private var ran = (1..2).random()
     private var quadro: Quadro?=null
+    private var quadroemer: QuadroEmergente?=null
     private val TAG = "MainActivity"
     private val storageRef = FirebaseStorage.getInstance().getReference()
 
@@ -74,6 +76,17 @@ class dettaglio_quadro : Fragment() {
                 val imagRef = storageRef.child("Quadri_storici/").child(quadro?.periodoapp.toString() + "/").child(quadro?.nome.toString() + ".jpg")
                 downloadFoto(imagRef)
                 }
+
+            quadroemer = it.getParcelable("quadroemer")
+            quadroemer?.let {
+                nome_quadro.text = it.nome
+                autore_quadro.text = it.autore
+                spiegazione.text = it.spiegazione
+                val annoquadro = String.format("%d", it.anno)
+                anno_quadro.text = annoquadro
+                val imagRef = storageRef.child("Quadri_emergenti/").child(quadroemer?.key.toString() + "/").child("Image")
+                downloadFoto(imagRef)
+            }
 
             }
 

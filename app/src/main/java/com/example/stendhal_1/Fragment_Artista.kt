@@ -25,7 +25,7 @@ class Fragment_Artista : Fragment() {
         //attributi
         private val database = FirebaseDatabase.getInstance().getReference("Utenti")
         private val auth = FirebaseAuth.getInstance()
-        private val user = FirebaseAuth.getInstance().currentUser?.uid
+        private val user = FirebaseAuth.getInstance().currentUser?.uid //Questo è l'id dell'utente
 
         //metodi
 
@@ -51,11 +51,12 @@ class Fragment_Artista : Fragment() {
             activity?.requestedOrientation=(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR) //impedisce la rotazione dello schermo
             super.onViewCreated(view, savedInstanceState)
             //setto colore e titolo dell'action bar
-            (activity as AppCompatActivity).supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.parseColor("#212121")))
+            (activity as AppCompatActivity).supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.parseColor("#004097")))
             (activity as AppCompatActivity).supportActionBar?.title="Diventa un artista"
 
             //divide le varie righe della recycleView
             lista_quadriemergenti.addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
+
             val emerg=ArrayList<QuadroEmergente?>()
             val keys = ArrayList<String>()
             val adapter = AdapterQuadri_emergenti(emerg,requireContext())
