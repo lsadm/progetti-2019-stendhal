@@ -16,7 +16,7 @@
             app:layout_constraintTop_toBottomOf="@+id/password"
             android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintVertical_bias="0.078"/>
+            app:layout_constraintVertical_bias="0.088"/>
     <EditText
             android:layout_width="300dp"
             android:layout_height="wrap_content"
@@ -25,7 +25,7 @@
             android:id="@+id/email"
             tools:text="@string/email" android:hint="@string/email"
             android:layout_marginStart="20dp" app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginTop="12dp" app:layout_constraintTop_toTopOf="parent"/>
+            android:layout_marginTop="10dp" app:layout_constraintTop_toBottomOf="@+id/nome"/>
     <EditText
             android:layout_width="300dp"
             android:layout_height="wrap_content"
@@ -33,7 +33,7 @@
             android:ems="10"
             android:id="@+id/nome"
             tools:text="@string/Nome" android:hint="@string/Nome" android:layout_marginStart="20dp"
-            app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="12dp"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="20dp"
             app:layout_constraintTop_toBottomOf="@+id/n_opere"/>
     <EditText
             android:layout_width="300dp"
@@ -43,6 +43,6 @@
             android:id="@+id/password"
             android:hint="@string/Password" android:layout_marginStart="20dp"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/nome"/>
+            android:layout_marginTop="10dp" app:layout_constraintTop_toBottomOf="@+id/email"/>
 
 </android.support.constraint.ConstraintLayout>

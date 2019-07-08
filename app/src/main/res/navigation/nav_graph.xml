@@ -41,6 +41,8 @@
         <action android:id="@+id/action_to_login" app:destination="@id/login"/>
         <action android:id="@+id/action_to_add_quadroemergente"
                 app:destination="@id/add_quadroemergente"/>
+        <action android:id="@+id/action_home_to_artisti_emergenti" app:destination="@id/artisti_emergenti"/>
+        <action android:id="@+id/action_to_fragment_Artista" app:destination="@id/fragment_Artista"/>
     </fragment>
     <fragment android:id="@+id/fragment_Artista" android:name="com.example.stendhal_1.Fragment_Artista"
               android:label="fragment_Artista" tools:layout="@layout/fragment_fragment__artista">

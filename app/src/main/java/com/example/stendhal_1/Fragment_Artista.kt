@@ -112,22 +112,16 @@ class Fragment_Artista : Fragment() {
                 if (auth.currentUser != null) {
                     Navigation.findNavController(it).navigate(R.id.action_to_add_quadroemergente)
                 } else {
+                    Toast.makeText(activity, " Effettua il login per inserire un quadro", Toast.LENGTH_SHORT).show()
                     Navigation.findNavController(it).navigate(R.id.action_to_login)
                 }
             }
 
-            if(user!=null) {
                 //scarico dal database le informazioni del singolo utente e le aggiungo in una lista
-                dataUser()
+                leggoemail_user()
                 //chiamata al listener per caricare e modificare la recycleView
                 database.child(user.toString()).child("Mie_opere").addChildEventListener(childEventListener) //il database da cui chiamo il listener fa variare il sottonodo del database che vado a leggere
-            }
-            //l'utente non è loggato quindi viene reindirizzato al login
-            else {
-                Toast.makeText(activity, "Non sei loggato", Toast.LENGTH_SHORT).show()
-                Navigation.findNavController(view).navigateUp()
-                Navigation.findNavController(view).navigate(R.id.action_to_login)
-            }
+
         }
 
         //quando lascio il fragment abilito la rotazione
@@ -137,7 +131,7 @@ class Fragment_Artista : Fragment() {
         }
 
         //scarica i dati dell'utente dal database
-        private fun dataUser() {
+        private fun leggoemail_user() {
             val leggoemail = object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val ut:Utente? = snapshot.getValue(Utente::class.java)
@@ -151,7 +145,7 @@ class Fragment_Artista : Fragment() {
                 }
             }
             database.child(user.toString()).child("Dati/Account").addValueEventListener(leggoemail)
-
         }
+
     }
 

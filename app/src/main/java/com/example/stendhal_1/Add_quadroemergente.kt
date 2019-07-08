@@ -209,8 +209,8 @@ class Add_quadroemergente : Fragment() {
                 if (foto_fatte != 0) caricaFoto(key.toString()) //le carico
                 else Navigation.findNavController(view!!).navigateUp() //altrimenti torno semplicemente indietro
             }
-            //se alcuni campi sono vuoti non posso caricare il gioco
-            else Toast.makeText(activity, "Riempire campi", Toast.LENGTH_SHORT).show()
+            //se alcuni campi sono vuoti non posso caricare il quadro
+            else Toast.makeText(activity, "Mancanza di alcuni campi", Toast.LENGTH_SHORT).show()
 
         }
 
@@ -227,7 +227,6 @@ class Add_quadroemergente : Fragment() {
                 // Handle any errors
             }
         }
-      //  foto_fatte = x[0] + x[1] + x[2] //tiene conto degli imageButton usati
 
 
     //carica le foto sul database
