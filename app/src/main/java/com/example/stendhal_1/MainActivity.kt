@@ -75,6 +75,12 @@ class MainActivity : AppCompatActivity() {
                     supportFragmentManager.beginTransaction().detach(fragment).attach(fragment).commit()
                 }
 
+                else if(choosequery==2){
+                    val fragment = NavHost.childFragmentManager.fragments.get(0) as artisti_emergenti
+                    invalidateOptionsMenu()
+                    supportFragmentManager.beginTransaction().detach(fragment).attach(fragment).commit()
+                }
+
                 return true // OR FALSE IF YOU DIDN'T WANT IT TO CLOSE!
             }
         })

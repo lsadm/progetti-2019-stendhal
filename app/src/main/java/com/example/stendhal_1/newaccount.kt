@@ -46,16 +46,15 @@ class newaccount : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (activity as AppCompatActivity).supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.parseColor("silver")))
+        (activity as AppCompatActivity).supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.parseColor("#004097")))
         (activity as AppCompatActivity).supportActionBar?.setTitle("Creazione account")
-       /* val v: View? = activity?.findViewById(R.id.bottomNavigation)
-        v?.visibility=View.GONE*/
+
         okbtn.setOnClickListener{
             if (verificacampi()) {
-                createAccount(n_opere.text.toString(),nome.text.toString(),password.text.toString())
+                createAccount(email.text.toString(),nome.text.toString(),password.text.toString())
             }
             else{
-                Toast.makeText(activity,"Email o password troppo breve",Toast.LENGTH_SHORT).show()
+                Toast.makeText(activity,"Mancanza di alcuni campi",Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -68,7 +67,7 @@ class newaccount : Fragment() {
 
     //verifica se i campi sono stati riempiti correttamente
     private fun verificacampi() : Boolean{
-        return n_opere.text.toString().isNotEmpty() && password.text.toString().isNotEmpty() && nome.text.toString().isNotEmpty()
+        return email.text.toString().isNotEmpty() && password.text.toString().isNotEmpty() && nome.text.toString().isNotEmpty()
     }
 
     fun createAccount(email : String, nome : String,password : String) {
@@ -87,12 +86,8 @@ class newaccount : Fragment() {
                 else {
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "createUserWithEmail:failure", task.exception)
-                    Toast.makeText(activity, "Errore nella registrazione",
-                        Toast.LENGTH_SHORT).show()
-                    //  updateUI(null)
+                    Toast.makeText(activity, "Errore nella registrazione", Toast.LENGTH_SHORT).show()
                 }
-
-                // ...
             }
     }
 

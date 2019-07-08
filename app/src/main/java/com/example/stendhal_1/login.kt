@@ -54,23 +54,20 @@ class login : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         //setto titolo e colore dell'actionbar
-        (activity as AppCompatActivity).supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.parseColor("silver")))
+        (activity as AppCompatActivity).supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.parseColor("#004097")))
         (activity as AppCompatActivity).supportActionBar?.setTitle("Login")
 
-        //nascondo il bottomNavigation
-        //val v: View? = activity?.findViewById(R.id.bottomNavigation)
-        //v?.visibility = View.GONE
-
         sharedPref = activity!!.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+
         traiinfo()
 
         //provo a effettuare il login
         okbtn.setOnClickListener {
             if (validcamp()) {
                 saveinfo()
-                signIn(n_opere.text.toString(), password.text.toString())
+                signIn(Username.text.toString(), password.text.toString())
             } else {
-                Toast.makeText(activity, "Non hai inserito email o password", Toast.LENGTH_SHORT).show()
+                Toast.makeText(activity, "Mancanza di alcuni campi", Toast.LENGTH_SHORT).show()
             }
         }
         newaccountbtn.setOnClickListener {
@@ -80,13 +77,13 @@ class login : Fragment() {
 
 
     private fun validcamp() : Boolean{
-        return (n_opere.text.toString().isNotEmpty() && password.text.toString().isNotEmpty())
+        return (Username.text.toString().isNotEmpty() && password.text.toString().isNotEmpty())
     }
 
     //salva i campi inseriti dall'utente
     private fun saveinfo() {
         val editor = sharedPref.edit()
-        val username = n_opere.text.toString()
+        val username = Username.text.toString()
         val password = password.text.toString()
         val autoLogin = chkAutoLogin.isChecked
 
@@ -102,7 +99,7 @@ class login : Fragment() {
         val pass = sharedPref.getString(PREF_PASSWORD,"")
         val autoLogin = sharedPref.getBoolean(PREF_AUTOLOGIN, false)
 
-        n_opere.setText(username)
+        Username.setText(username)
         password.setText(pass)
         chkAutoLogin.isChecked = autoLogin
     }

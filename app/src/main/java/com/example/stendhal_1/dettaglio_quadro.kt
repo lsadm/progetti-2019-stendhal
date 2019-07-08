@@ -46,12 +46,12 @@ class dettaglio_quadro : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when(item?.itemId) {
             R.id.Cestino  -> {
-                //finestra di dialog per eliminare gioco
+                //Per eliminare il quadro
                 val builder = AlertDialog.Builder(activity as AppCompatActivity)
                 builder.setTitle(R.string.AlertMessage)
                 builder.setNegativeButton(R.string.NegativeButton, DialogInterface.OnClickListener { _, which -> }) //chiude la finestra
                 builder.setPositiveButton(R.string.PositiveButton, DialogInterface.OnClickListener { _, which ->
-                    deleteGame() //elimina il gioco
+                    CancellaQuadro() //elimina il quadro
                     Navigation.findNavController(view!!).navigateUp() //e torna indietro
                 })
                 builder.show() //mostra la finestra
@@ -68,23 +68,20 @@ class dettaglio_quadro : Fragment() {
     }
 
 
-
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-
             super.onCreateOptionsMenu(menu, inflater)
             menu?.clear()
             if (quadroemer?.id == id) {
                 inflater?.inflate(R.menu.menu_modifica, menu) //viene mostrato solo il menu modifica
+            }
+    }
 
-
-    }}
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-
+        //Quanti elementi vi sono in un ArrayList di elementi di tipo: Quadro emergente
         fun getItemCount(array: ArrayList<QuadroEmergente?>): Int {
             return array.size
         }
-
 
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
@@ -92,10 +89,13 @@ class dettaglio_quadro : Fragment() {
         (activity as AppCompatActivity).supportActionBar?.setTitle("Stendhal")
         setHasOptionsMenu(true)
         activity?.requestedOrientation = (ActivityInfo.SCREEN_ORIENTATION_NOSENSOR) //impedisce la rotazione dello schermo
-        val quadremer = ArrayList<QuadroEmergente?>()
+        val arrayquadremer = ArrayList<QuadroEmergente?>()
+
         // Estraggo il parametro (quadro) dal bundle e lo visualizzo
         //visualizzo il dettaglio
         arguments?.let {
+
+            //Caso in cui dal bundle ho ricevuto un quadro storico
             quadro = it.getParcelable("quadro")
             quadro?.let {
                 nome_quadro.text = it.nome
@@ -107,6 +107,7 @@ class dettaglio_quadro : Fragment() {
                 downloadFoto(imagRef)
                 }
 
+            //Caso in cui dal bundle ho ricevuto un quadro emergente
             quadroemer = it.getParcelable("quadroemer")
             quadroemer?.let {
                 nome_quadro.text = it.nome
@@ -124,15 +125,16 @@ class dettaglio_quadro : Fragment() {
         val quadroemergenteListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 //Leggo dal database tutti i quadri emergenti e li metto in quadremer che è un ArrayList
-                quadremer.clear()
+                arrayquadremer.clear()
                 snapshot.children.forEach {
                     val quadrosingolo:QuadroEmergente = it.getValue(QuadroEmergente::class.java)!!
-                    quadremer.add(quadrosingolo)
+                    arrayquadremer.add(quadrosingolo)
                 }
 
-                val numeroelementi = getItemCount(quadremer)
-                val ran = (1..numeroelementi).random()
-                val quadro:QuadroEmergente?=quadremer.get(ran)
+                val numeroelementi = getItemCount(arrayquadremer) //Numero di elementi nell'ArrayList
+                val ran = (1..numeroelementi).random() //Generazione valore random compreso tra 1 e la dimensione dell'ArrayList
+                val quadro:QuadroEmergente?=arrayquadremer.get(ran-1) //Prelevo dall'ArrayList un elemento scelto casualmente
+                //E lo visualizzo
                 nome_quadro.text = quadro?.nome
                 autore_quadro.text = quadro?.autore
                 spiegazione.text = quadro?.spiegazione
@@ -172,11 +174,10 @@ class dettaglio_quadro : Fragment() {
 
 
 
-    private fun deleteGame() {
+    private fun CancellaQuadro() {
         database_quadriemergenti.child(quadroemer!!.key.toString()).removeValue()
         nodo.child("Utenti").child(auth.currentUser!!.uid).child("Mie_opere").child(quadroemer!!.key.toString()).removeValue()
         storageRef.child("Quadri_emergenti").child(quadroemer!!.key.toString()).child("Image").delete()
-
     }
 
     private fun zoomFoto(img : ImageView) {

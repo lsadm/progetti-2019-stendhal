@@ -72,9 +72,9 @@ class Add_quadroemergente : Fragment() {
 
         //Nel caso in cui si voglia modificare un quadro già esistente:
         arguments?.let{
-            //modifico il gioco
+            //modifico il quadro
             mod = 1
-            //estraggo il gioco dal bundle
+            //estraggo il quadro dal bundle
             quadro_emergente = it.getParcelable("quadro")
             quadro_emergente?.let {
                 //e mostro nel dettaglio i suoi attributi
