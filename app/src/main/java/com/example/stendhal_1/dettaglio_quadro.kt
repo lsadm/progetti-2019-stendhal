@@ -29,11 +29,8 @@ class dettaglio_quadro : Fragment() {
     private val auth = FirebaseAuth.getInstance()
     private val database = FirebaseDatabase.getInstance().getReference("Quadri")
     private val database_quadriemergenti = database.child("Quadri_emergenti")
-    private var database_emergenti = FirebaseDatabase.getInstance().getReference()
     private val nodo = FirebaseDatabase.getInstance().reference
     private val id = auth.currentUser?.uid.toString()
-    private var count = 0
-    private var ran = (1..2).random()
     private var quadro: Quadro?=null
     private var quadroemer: QuadroEmergente?=null
     private val TAG = "MainActivity"
@@ -82,13 +79,20 @@ class dettaglio_quadro : Fragment() {
 
     }}
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+
+        fun getItemCount(array: ArrayList<QuadroEmergente?>): Int {
+            return array.size
+        }
+
+
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
         (activity as AppCompatActivity).supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.parseColor("#004097")))
         (activity as AppCompatActivity).supportActionBar?.setTitle("Stendhal")
         setHasOptionsMenu(true)
         activity?.requestedOrientation = (ActivityInfo.SCREEN_ORIENTATION_NOSENSOR) //impedisce la rotazione dello schermo
-
+        val quadremer = ArrayList<QuadroEmergente?>()
         // Estraggo il parametro (quadro) dal bundle e lo visualizzo
         //visualizzo il dettaglio
         arguments?.let {
@@ -110,23 +114,31 @@ class dettaglio_quadro : Fragment() {
                 spiegazione.text = it.spiegazione
                 val annoquadro = String.format("%d", it.anno)
                 anno_quadro.text = annoquadro
-                val imagRef = storageRef.child("Quadri_emergenti/").child(quadroemer?.key.toString() + "/").child("Image")
+                val imagRef = storageRef.child("Quadri_emergenti/").child(quadroemer?.key.toString()).child("Image")
                 downloadFoto(imagRef)
             }
 
             }
 
-        //PER QUADRO EMERGENTE DEL GIORNO
+        //PER QUADRO EMERGENTE CAUSALE
         val quadroemergenteListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val quadrov:Quadro? = snapshot.getValue(Quadro::class.java)
-                quadro=quadrov
-                nome_quadro.text = quadrov?.nome
-                autore_quadro.text = quadrov?.autore
-                spiegazione.text = quadrov?.spiegazione
-                val annoquadro = String.format("%d", quadrov?.anno)
+                //Leggo dal database tutti i quadri emergenti e li metto in quadremer che è un ArrayList
+                quadremer.clear()
+                snapshot.children.forEach {
+                    val quadrosingolo:QuadroEmergente = it.getValue(QuadroEmergente::class.java)!!
+                    quadremer.add(quadrosingolo)
+                }
+
+                val numeroelementi = getItemCount(quadremer)
+                val ran = (1..numeroelementi).random()
+                val quadro:QuadroEmergente?=quadremer.get(ran)
+                nome_quadro.text = quadro?.nome
+                autore_quadro.text = quadro?.autore
+                spiegazione.text = quadro?.spiegazione
+                val annoquadro = String.format("%d", quadro?.anno)
                 anno_quadro.text = annoquadro
-                val imagRef = storageRef.child("Quadri_emergenti/").child(quadrov?.nome.toString() + ".jpg")
+                val imagRef = storageRef.child("Quadri_emergenti").child(quadro?.key.toString()).child("Image")
                 downloadFoto(imagRef)
             }
             override fun onCancelled(databaseError: DatabaseError) {
@@ -134,30 +146,10 @@ class dettaglio_quadro : Fragment() {
                 Toast.makeText(context, "Failed to load comments.", Toast.LENGTH_SHORT).show()
             }
         }
-
-
-        val ItemDatabase = object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                snapshot.children.forEach {
-                    count++
-                    Log.d("TAG", "Contatore = " + count.toString())
-                }
-                ran = (1..count).random()
-                Log.d("TAG", "Ran = " + ran.toString())
-                database_emergenti = database_quadriemergenti.child(ran.toString())
-
-                if (bidirezione==true){
-                    database_emergenti.addValueEventListener(quadroemergenteListener)
-                    bidirezione=false
-                }
-            }
-            override fun onCancelled(databaseError: DatabaseError) {
-                Log.w(TAG, "postComments:onCancelled", databaseError.toException())
-                Toast.makeText(context, "Failed to load comments.", Toast.LENGTH_SHORT).show()
-            }
+        if (bidirezione==true){
+            database_quadriemergenti.addValueEventListener(quadroemergenteListener)
+            bidirezione=false
         }
-        database_quadriemergenti.addValueEventListener(ItemDatabase)
-
         picture.setOnClickListener {
             zoomFoto(picture)
         }

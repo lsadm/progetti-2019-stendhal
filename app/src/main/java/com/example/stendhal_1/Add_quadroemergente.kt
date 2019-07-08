@@ -168,9 +168,9 @@ class Add_quadroemergente : Fragment() {
         }
         //
         //
-        database.child("Utenti/" + id + "/Dati/Account/").addValueEventListener(leggiautore)
+        if (mod!=1) database.child("Utenti/" + id + "/Dati/Account/").addValueEventListener(leggiautore)
 
-        if (mod == 1) {
+        else{
 
         val anno = anno.text.toString()
         val spiegazione = Spiegazione.text.toString()
