@@ -13,12 +13,12 @@ import com.example.stendhal_1.datamodel.QuadroEmergente
 
 
     class AdapterQuadri_emergenti(val dataset: ArrayList<QuadroEmergente?>, val context: Context) : RecyclerView.Adapter<rigaquadroviewholder>() {
-        //caricamento foto dal database
+        //Riferimento allo storage di Firebase per il caricamento della foto
         val storageRef = FirebaseStorage.getInstance().getReference()
 
         // Invocata per creare un ViewHolder
         override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): rigaquadroviewholder {
-            // Crea e restituisce un viewholder, effettuando l'inflate del layout relativo alla riga
+            // Crea e restituisce un viewholder
             return rigaquadroviewholder(LayoutInflater.from(context).inflate(R.layout.riga_quadro, viewGroup, false))
         }
 
@@ -37,13 +37,14 @@ import com.example.stendhal_1.datamodel.QuadroEmergente
             viewHolder.tvNome.text = quadro?.nome
             viewHolder.tvAutore.text = quadro?.autore
             viewHolder.tvAnno.text = anno_string
-            //scarica la foto dal database e la setta nella riga
+
+            //Scarica la foto dal database e la setta nella riga
             imagRef.downloadUrl.addOnSuccessListener {
                 GlideApp.with(context).load(it).diskCacheStrategy(DiskCacheStrategy.AUTOMATIC).into(viewHolder.Immagine)
             }
 
+            //Nel momento in cui selezione una view passo attraverso un bundle un quadro emergente
                 viewHolder.itemView.setOnClickListener {
-                    //Cosa fare quando seleziono una view
                     val b = Bundle()
                     b.putParcelable("quadroemer", quadro)
                     Navigation.findNavController(it).navigate(R.id.action_to_dettaglio_quadro, b)

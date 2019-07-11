@@ -1,5 +1,6 @@
 package com.example.stendhal_1
 
+import android.content.pm.ActivityInfo
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -20,8 +21,6 @@ import kotlinx.android.synthetic.main.fragment_periodi.*
 
 class Periodo : Fragment() {
 
-    //attributi
-
     private val database = FirebaseDatabase.getInstance().getReference("Periodo")
     private val TAG = "MainActivity"
 
@@ -38,10 +37,9 @@ class Periodo : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        activity?.requestedOrientation=(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR) //Impedisce la rotazione dello schermo
         (activity as AppCompatActivity).supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.parseColor("#004097")))
         (activity as AppCompatActivity).supportActionBar?.setTitle("Stendhal")
-        /*val v: View? = activity?.findViewById(R.id.bottomNavigation)
-        v?.visibility=View.VISIBLE*/
         val period = ArrayList<com.example.stendhal_1.datamodel.Periodo?>()
         val adapter = PeriodiAdapter(period, requireContext())
         list_periodi.adapter = adapter

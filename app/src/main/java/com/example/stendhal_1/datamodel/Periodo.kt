@@ -1,4 +1,5 @@
 package com.example.stendhal_1.datamodel
+
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 

@@ -1,5 +1,6 @@
 package com.example.stendhal_1
 
+import android.content.pm.ActivityInfo
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -40,6 +41,7 @@ class artisti_emergenti : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        activity?.requestedOrientation=(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR) //Impedisce la rotazione dello schermo
         super.onViewCreated(view, savedInstanceState)
         (activity as AppCompatActivity).supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.parseColor("#004097")))
         (activity as AppCompatActivity).supportActionBar?.setTitle("Stendhal")
@@ -63,7 +65,7 @@ class artisti_emergenti : Fragment() {
             override fun onChildChanged(dataSnapshot: DataSnapshot, previousChildName: String?) {
                 Log.d(TAG, "onChildChanged: ${dataSnapshot.key}")
                 val g = dataSnapshot.getValue(QuadroEmergente::class.java)
-                val index = keys.indexOf(dataSnapshot.key.toString()) //ottengo l'indice del gioco aggiornato
+                val index = keys.indexOf(dataSnapshot.key.toString()) //ottengo l'indice del quadro aggiornato
                 quadroemergente[index]=g
                 adapter.notifyDataSetChanged()
             }

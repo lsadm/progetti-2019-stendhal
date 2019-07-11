@@ -71,24 +71,23 @@ class dettaglio_quadro : Fragment() {
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
             super.onCreateOptionsMenu(menu, inflater)
             menu?.clear()
-            if (quadroemer?.id == id) {
+        if (quadroemer?.id == id) {
                 inflater?.inflate(R.menu.menu_modifica, menu) //viene mostrato solo il menu modifica
             }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         //Quanti elementi vi sono in un ArrayList di elementi di tipo: Quadro emergente
         fun getItemCount(array: ArrayList<QuadroEmergente?>): Int {
             return array.size
         }
 
-        super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
+        activity?.requestedOrientation=(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR) //Impedisce la rotazione dello schermo
         (activity as AppCompatActivity).supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.parseColor("#004097")))
         (activity as AppCompatActivity).supportActionBar?.setTitle("Stendhal")
-        setHasOptionsMenu(true)
-        activity?.requestedOrientation = (ActivityInfo.SCREEN_ORIENTATION_NOSENSOR) //impedisce la rotazione dello schermo
         val arrayquadremer = ArrayList<QuadroEmergente?>()
 
         // Estraggo il parametro (quadro) dal bundle e lo visualizzo

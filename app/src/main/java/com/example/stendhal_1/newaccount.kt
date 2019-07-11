@@ -1,5 +1,6 @@
 package com.example.stendhal_1
 
+import android.content.pm.ActivityInfo
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -46,6 +47,7 @@ class newaccount : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        activity?.requestedOrientation=(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR) //Impedisce la rotazione dello schermo
         (activity as AppCompatActivity).supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.parseColor("#004097")))
         (activity as AppCompatActivity).supportActionBar?.setTitle("Creazione account")
 
@@ -79,7 +81,6 @@ class newaccount : Fragment() {
                     val usr = Utente(nome,email)
                     writeNewUser(user, usr) //memorizza sul database
                     Toast.makeText(context, "Utente registrato con successo", Toast.LENGTH_SHORT).show()
-                    //torno direttamente alla lista giochi e non al login
                     Navigation.findNavController(view!!).navigateUp()
                     Navigation.findNavController(view!!).navigateUp()
                 }

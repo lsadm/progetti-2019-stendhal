@@ -9,17 +9,14 @@ import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
-import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.*
-import android.widget.ImageButton
 import android.widget.Toast
 import androidx.navigation.Navigation
-import com.example.stendhal_1.datamodel.Quadro
 import com.example.stendhal_1.datamodel.QuadroEmergente
 import com.example.stendhal_1.datamodel.Utente
 import com.google.firebase.auth.FirebaseAuth
@@ -33,30 +30,22 @@ import java.io.ByteArrayOutputStream
 
 
 class Add_quadroemergente : Fragment() {
-    var mod = 0 //indica se il quadro deve essere modificato
+    var mod = 0 //Indica se il quadro deve essere modificato
     val database = FirebaseDatabase.getInstance().reference
     val storageRef = FirebaseStorage.getInstance().getReference()
     var autore : String? = null
-    var foto : ImageButton?= null
+    //var foto : ImageButton?= null
     var quadro_emergente : QuadroEmergente? =null
     var foto_fatte : Int =0
     var foto_caricate : Int = 0
     val REQUEST_IMAGE_CAPTURE = 1
 
 
-    //metodi
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        //aggiungo questa riga per aggiungere un riferimento al menu
-        setHasOptionsMenu(true)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         setHasOptionsMenu(true)
         return inflater.inflate(R.layout.fragment_add_quadroemergente, container, false)
     }
@@ -64,11 +53,12 @@ class Add_quadroemergente : Fragment() {
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?){
         super.onCreateOptionsMenu(menu, inflater)
         menu?.clear()
-        inflater?.inflate(R.menu.tick_button, menu) //visualizzo solo la spunta per l'inserimento
+        inflater?.inflate(R.menu.tick_button, menu) //Visualizzo solo la spunta per la conferma dell'inserimento
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        activity?.requestedOrientation=(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR) //impedisce la rotazione dello schermo
+        super.onViewCreated(view, savedInstanceState)
+        activity?.requestedOrientation=(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR) //Impedisce la rotazione dello schermo
 
         //Nel caso in cui si voglia modificare un quadro già esistente:
         arguments?.let{
@@ -156,7 +146,7 @@ class Add_quadroemergente : Fragment() {
                     if (foto_fatte != 0) caricaFoto(key.toString()) //le carico
                     else Navigation.findNavController(view!!).navigateUp() //altrimenti torno semplicemente indietro
                 }
-                //se alcuni campi sono vuoti non posso caricare il gioco
+                //se alcuni campi sono vuoti non posso caricare il quadro
                 else Toast.makeText(activity, "Riempire campi", Toast.LENGTH_SHORT).show()
 
             }
@@ -193,7 +183,7 @@ class Add_quadroemergente : Fragment() {
                         id
                     )
                 ) //e nell'area personale dell'utente
-                //in quel percorso con identificativo unico inserisco il gioco. Rappresenta la lista di giochi visibile a tutti
+                //in quel percorso con identificativo unico inserisco il quadro. Rappresenta la lista di quadri visibile a tutti
                 database.child("Utenti").child(id).child("Mie_opere").child(key.toString()).setValue(
                     QuadroEmergente(
                         nome,

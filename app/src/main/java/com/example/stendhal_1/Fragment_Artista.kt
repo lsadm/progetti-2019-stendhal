@@ -49,8 +49,8 @@ class Fragment_Artista : Fragment() {
         }
 
         override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-            activity?.requestedOrientation=(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR) //impedisce la rotazione dello schermo
             super.onViewCreated(view, savedInstanceState)
+            activity?.requestedOrientation=(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR) //impedisce la rotazione dello schermo
             //setto colore e titolo dell'action bar
             (activity as AppCompatActivity).supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.parseColor("#004097")))
             (activity as AppCompatActivity).supportActionBar?.title="Diventa un artista"
@@ -64,7 +64,7 @@ class Fragment_Artista : Fragment() {
             lista_quadriemergenti.adapter = adapter
             var cont=0 //contatore di righe inserite nella recycleView
 
-            //setta la textView annunci col valore di cont, inizialmente a 0
+            //setta la textView n_opere col valore di cont, inizialmente a 0
             n_opere.text=cont.toString()
 
             //Vari listener (di Firebase) per aggiornare dinamicamente la recyclerView
@@ -84,7 +84,7 @@ class Fragment_Artista : Fragment() {
                 override fun onChildChanged(dataSnapshot: DataSnapshot, previousChildName: String?) {
                     Log.d(TAG, "onChildChanged: ${dataSnapshot.key}")
                     val g = dataSnapshot.getValue(QuadroEmergente::class.java)
-                    val index = keys.indexOf(dataSnapshot.key.toString()) //ottengo l'indice del gioco aggiornato
+                    val index = keys.indexOf(dataSnapshot.key.toString()) //ottengo l'indice del quadro aggiornato
                     emerg.set(index,g)
                     adapter.notifyDataSetChanged()
                 }
