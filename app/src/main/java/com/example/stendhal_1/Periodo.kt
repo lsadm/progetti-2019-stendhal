@@ -66,6 +66,7 @@ class Periodo : Fragment() {
         database.addValueEventListener(periodiListener)
 
 
+       list_periodi.addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
 
         // Imposto il layout manager a lineare per avere scrolling in una direzione
         list_periodi.layoutManager = LinearLayoutManager(activity)
