@@ -23,6 +23,10 @@ import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.fragment_dettaglio_quadro.*
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import android.text.method.ScrollingMovementMethod
+import android.widget.TextView
+
+
 
 class dettaglio_quadro : Fragment() {
 
@@ -35,6 +39,7 @@ class dettaglio_quadro : Fragment() {
     private var quadroemer: QuadroEmergente?=null
     private val TAG = "MainActivity"
     private val storageRef = FirebaseStorage.getInstance().getReference()
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -193,5 +198,6 @@ class dettaglio_quadro : Fragment() {
 
 
 }
+
 
 
