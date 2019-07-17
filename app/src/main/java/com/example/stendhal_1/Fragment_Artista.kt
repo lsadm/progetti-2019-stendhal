@@ -51,11 +51,11 @@ class Fragment_Artista : Fragment() {
         override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
             super.onViewCreated(view, savedInstanceState)
             activity?.requestedOrientation=(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR) //impedisce la rotazione dello schermo
+
             //setto colore e titolo dell'action bar
             (activity as AppCompatActivity).supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.parseColor("#004097")))
             (activity as AppCompatActivity).supportActionBar?.title="Diventa un artista"
 
-            //divide le varie righe della recycleView
             lista_quadriemergenti.addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
 
             val emerg=ArrayList<QuadroEmergente?>()
@@ -124,11 +124,6 @@ class Fragment_Artista : Fragment() {
 
         }
 
-        //quando lascio il fragment abilito la rotazione
-        override fun onDestroyView() {
-            super.onDestroyView()
-            activity?.requestedOrientation=(ActivityInfo.SCREEN_ORIENTATION_SENSOR)
-        }
 
         //scarica i dati dell'utente dal database
         private fun leggoemail_user() {

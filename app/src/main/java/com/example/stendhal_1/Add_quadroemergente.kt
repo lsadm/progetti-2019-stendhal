@@ -2,7 +2,6 @@ package com.example.stendhal_1
 
 import android.app.Activity
 import android.content.ContentValues.TAG
-import android.content.Context
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.graphics.Bitmap
@@ -30,16 +29,14 @@ import java.io.ByteArrayOutputStream
 
 
 class Add_quadroemergente : Fragment() {
-    var mod = 0 //Indica se il quadro deve essere modificato
+    var mod = 0 //Indica se il quadro deve essere modificato oppure è un nuovo inserimento
     val database = FirebaseDatabase.getInstance().reference
     val storageRef = FirebaseStorage.getInstance().getReference()
     var autore : String? = null
-    //var foto : ImageButton?= null
     var quadro_emergente : QuadroEmergente? =null
     var foto_fatte : Int =0
     var foto_caricate : Int = 0
     val REQUEST_IMAGE_CAPTURE = 1
-
 
 
     override fun onCreateView(
@@ -64,7 +61,7 @@ class Add_quadroemergente : Fragment() {
         arguments?.let{
             //modifico il quadro
             mod = 1
-            //estraggo il quadro dal bundle
+            //estraggo il quadro dal bundle _ Il put si trova in Dettaglio_quadro - Nella parte della modifica
             quadro_emergente = it.getParcelable("quadro")
             quadro_emergente?.let {
                 //e mostro nel dettaglio i suoi attributi
@@ -72,7 +69,7 @@ class Add_quadroemergente : Fragment() {
                 Nome.setText(quadro_emergente?.nome)
                 anno.setText(quadro_emergente?.anno.toString())
                 Spiegazione.setText(quadro_emergente?.spiegazione)
-                download_foto() //scarico le foto e le inserisco negli imageButton
+                download_foto()
                 (activity as AppCompatActivity).supportActionBar?.setTitle("Modifica la tua opera")
             }
         }
@@ -84,11 +81,11 @@ class Add_quadroemergente : Fragment() {
             (activity as AppCompatActivity).supportActionBar?.setTitle("Aggiungi la tua opera")
         }
 
-        // Imposta il funzionamento del pulsante per l'acqisizione dell'immagine
+        // Imposta il funzionamento del pulsante per l'acquisizione dell'immagine
         val takePhoto = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
 
         foto_quadro.setOnClickListener {
-            // Creo un intent di tipo implicito per acquisire l'immagine
+            // Creo un intent per acquisire l'immagine
             takePhoto.resolveActivity(activity!!.packageManager)?.also {
                 startActivityForResult(takePhoto, REQUEST_IMAGE_CAPTURE)
             }

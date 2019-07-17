@@ -15,7 +15,6 @@ import com.example.stendhal_1.datamodel.QuadroEmergente
     class AdapterQuadri_emergenti(val dataset: ArrayList<QuadroEmergente?>, val context: Context) : RecyclerView.Adapter<rigaquadroviewholder>() {
         //Riferimento allo storage di Firebase per il caricamento della foto
         val storageRef = FirebaseStorage.getInstance().getReference()
-
         // Invocata per creare un ViewHolder
         override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): rigaquadroviewholder {
             // Crea e restituisce un viewholder

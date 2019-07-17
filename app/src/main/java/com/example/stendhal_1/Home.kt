@@ -26,16 +26,12 @@ class Home : Fragment() {
     }
 
 
-    //vedi bene
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         activity?.requestedOrientation=(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR) //Impedisce la rotazione dello schermo
         (activity as AppCompatActivity).supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.parseColor("#004097")))
         (activity as AppCompatActivity).supportActionBar?.setTitle("Stendhal")
-
-        //con questo metodo nascondo search bar
         setHasOptionsMenu(true)
-
 
 
         imageButton_periodi.setOnClickListener {
@@ -54,13 +50,11 @@ class Home : Fragment() {
         super.onCreateOptionsMenu(menu, inflater)
         menu?.clear()
         val usr = FirebaseAuth.getInstance().currentUser
-        if(usr==null) { //se non è loggato esce login
+        if(usr==null) { //Se non vi è un utente loggato, visualizziamo il button_login
             inflater?.inflate(R.menu.button_login, menu)
-
         }
-        else { //altrimenti logout
+        else { //Altrimenti button_logout
             inflater?.inflate(R.menu.button_logout, menu)
-            //inflater?.inflate(R.menu.search, menu)
         }
     }
 }

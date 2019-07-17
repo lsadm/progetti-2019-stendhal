@@ -21,7 +21,7 @@ import com.google.firebase.auth.FirebaseUser
 
 class MainActivity : AppCompatActivity() {
 
-    private val PREF_NAME = "Stendhal"      // Nome del file
+    private val PREF_NAME = "Stendhal"
     private val PREF_USERNAME = "Username"
     private val PREF_PASSWORD = "Password"
     private val PREF_AUTOLOGIN = "AutoLogin"
@@ -127,7 +127,7 @@ class MainActivity : AppCompatActivity() {
                 // Sign in success, update UI with the signed-in user's information
                 Log.d("MainActivity", "signInWithEmail:success")
                 Toast.makeText(baseContext, "Utente loggato", Toast.LENGTH_SHORT).show()
-                invalidateOptionsMenu() //dopo il logout invalido il menu, così viene richiamato onCreateOptionsMenu (per visualizzare logout)
+                invalidateOptionsMenu() //dopo il login invalido il menu, così viene richiamato onCreateOptionsMenu (per visualizzare logout)
             } else {
                 // If sign in fails, display a message to the user.
                 Log.w("MainActivity", "signInWithEmail:failure", task.exception)

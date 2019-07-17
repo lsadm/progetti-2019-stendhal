@@ -36,9 +36,11 @@ class QuadriAdapter(val dataset: ArrayList<Quadro?>, val context: Context) : Rec
         viewHolder.tvNome.text = quadro?.nome
         viewHolder.tvAutore.text = quadro?.autore
         viewHolder.tvAnno.text = anno_string
+
         //scarica la foto dal database e la setta nella riga
         imagRef.downloadUrl.addOnSuccessListener {
             GlideApp.with(context).load(it).diskCacheStrategy(DiskCacheStrategy.AUTOMATIC).into(viewHolder.Immagine)
+        }
 
             viewHolder.itemView.setOnClickListener {
                 //Cosa fare quando seleziono una view
@@ -46,6 +48,6 @@ class QuadriAdapter(val dataset: ArrayList<Quadro?>, val context: Context) : Rec
                 b.putParcelable("quadro", quadro)
                 Navigation.findNavController(it).navigate(R.id.action_to_dettaglio_quadro, b)
             }
-        }
+
     }
 }

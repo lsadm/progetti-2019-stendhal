@@ -16,33 +16,38 @@
             app:layout_constraintTop_toBottomOf="@+id/password"
             android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintVertical_bias="0.088"/>
+            app:layout_constraintVertical_bias="0.03"/>
     <EditText
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
+            android:layout_width="305dp"
+            android:layout_height="40dp"
             android:inputType="textEmailAddress"
             android:ems="10"
             android:id="@+id/email"
             tools:text="@string/email" android:hint="@string/email"
             android:layout_marginStart="20dp" app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginTop="10dp" app:layout_constraintTop_toBottomOf="@+id/nome"/>
+            android:layout_marginTop="20dp" app:layout_constraintTop_toBottomOf="@+id/nome"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="91dp"
+            app:layout_constraintHorizontal_bias="0.4"/>
     <EditText
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
+            android:layout_width="305dp"
+            android:layout_height="40dp"
             android:inputType="textPersonName"
             android:ems="10"
             android:id="@+id/nome"
-            tools:text="@string/Nome" android:hint="@string/Nome" android:layout_marginStart="20dp"
-            app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="20dp"
-            app:layout_constraintTop_toBottomOf="@+id/n_opere"/>
+            tools:text="@string/Nome" android:hint="@string/Nome"
+            android:layout_marginTop="20dp"
+            app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="20dp" app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="91dp"/>
     <EditText
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
+            android:layout_width="305dp"
+            android:layout_height="40dp"
             android:inputType="textPassword"
             android:ems="10"
             android:id="@+id/password"
             android:hint="@string/Password" android:layout_marginStart="20dp"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginTop="10dp" app:layout_constraintTop_toBottomOf="@+id/email"/>
+            android:layout_marginTop="15dp" app:layout_constraintTop_toBottomOf="@+id/email"
+            android:layout_marginEnd="91dp" app:layout_constraintEnd_toEndOf="parent"/>
 
 </android.support.constraint.ConstraintLayout>

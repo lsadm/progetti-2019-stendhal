@@ -7,8 +7,8 @@ import kotlinx.android.synthetic.main.riga_periodo.view.*
 
 class rigaperiodoviewholder(view: View) : RecyclerView.ViewHolder(view) {
     val tvNome = view.textNome
-    val tvAnno = view.textAutore
+    val tvAnno = view.textAnno
 }
 
-/* La recycle view è una lista di oggetti viewholder -  qui li andiamo a definire
+/* La recycler view è una lista di oggetti viewholder -  qui li andiamo a definire
 * Tali view holder object sono gestiti da un adapter*/

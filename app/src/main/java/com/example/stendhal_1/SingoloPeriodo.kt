@@ -21,14 +21,9 @@ import kotlinx.android.synthetic.main.fragment_singolo_periodo.*
 class SingoloPeriodo : Fragment() {
 
 
-    private val TAG = "MainActivity" ///////////Rivedi, che cosa è?
+    private val TAG = "MainActivity"
     private val database = FirebaseDatabase.getInstance().getReference("Quadri/Quadri_storici")
     private var periodoquery : Periodo?= null
-
-
-
-
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,12 +39,13 @@ class SingoloPeriodo : Fragment() {
         activity?.requestedOrientation=(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR) //Impedisce la rotazione dello schermo
         (activity as AppCompatActivity).supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.parseColor("#004097")))
         (activity as AppCompatActivity).supportActionBar?.setTitle("Stendhal")
+
         val quadr=ArrayList<Quadro?>()
         val adapter = QuadriAdapter(quadr,requireContext())
         list_quadri.adapter = adapter
 
         arguments?.let {
-            val periodo: com.example.stendhal_1.datamodel.Periodo? = it.getParcelable("periodo") //Estrazione dal bundle - ottengo periodo per il nome
+            val periodo: com.example.stendhal_1.datamodel.Periodo? = it.getParcelable("periodo") //Estrazione dal bundle - ottengo periodo per il nome del sottonodo
             periodo?.let {
                 periodoquery=periodo
                 val quadrilistener = object : ValueEventListener {
@@ -61,7 +57,7 @@ class SingoloPeriodo : Fragment() {
                         }
                         adapter.notifyDataSetChanged()
                     }
-//kssodkoskd
+
                     override fun onCancelled(databaseError: DatabaseError) {
                         Log.w(TAG, "postComments:onCancelled", databaseError.toException())
                         Toast.makeText(context, "Failed to load comments.", Toast.LENGTH_SHORT).show()
@@ -71,7 +67,7 @@ class SingoloPeriodo : Fragment() {
                 val database = FirebaseDatabase.getInstance().getReference("Quadri")
                 val databasemio = database.child("Quadri_storici/"+periodo.nome!!) //In base al periodo selezionato verrà mostrato un sottonodo diverso del database
 
-                databasemio.addValueEventListener(quadrilistener) //////////////RIVEDIIIII
+                databasemio.addValueEventListener(quadrilistener)
 
                 list_quadri.addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
                 // Imposto il layout manager a lineare per avere scrolling in una direzione

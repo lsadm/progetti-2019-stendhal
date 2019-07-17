@@ -22,7 +22,7 @@ class login : Fragment() {
 
     var auth = FirebaseAuth.getInstance()
     var user: FirebaseUser? = null
-    private val PREF_NAME = "Stendhal"      // Nome del file
+    private val PREF_NAME = "Stendhal"
     private val PREF_USERNAME = "Username"
     private val PREF_PASSWORD = "Password"
     private val PREF_AUTOLOGIN = "AutoLogin"
@@ -43,7 +43,7 @@ class login : Fragment() {
     }
 
 
-    //invocata appena viene effettuato il login
+    //Dopo aver effettuato il login..
     private fun updateUI(usr: FirebaseUser?) {
         if (usr != null) {
             Toast.makeText(activity, "Utente loggato", Toast.LENGTH_LONG).show()
@@ -56,7 +56,7 @@ class login : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         activity?.requestedOrientation=(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR) //Impedisce la rotazione dello schermo
 
-        //setto titolo e colore dell'actionbar
+        //Setto titolo e colore dell'ActionBar
         (activity as AppCompatActivity).supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.parseColor("#004097")))
         (activity as AppCompatActivity).supportActionBar?.setTitle("Login")
 
@@ -64,7 +64,7 @@ class login : Fragment() {
 
         traiinfo()
 
-        //provo a effettuare il login
+        //Provo a effettuare il login
         okbtn.setOnClickListener {
             if (validcamp()) {
                 saveinfo()
@@ -73,9 +73,11 @@ class login : Fragment() {
                 Toast.makeText(activity, "Mancanza di alcuni campi", Toast.LENGTH_SHORT).show()
             }
         }
+
         newaccountbtn.setOnClickListener {
             Navigation.findNavController(it).navigate(R.id.action_login_to_newaccount)
         }
+
     }
 
 
@@ -83,10 +85,12 @@ class login : Fragment() {
         return (Username.text.toString().isNotEmpty() && password.text.toString().isNotEmpty())
     }
 
-    //salva i campi inseriti dall'utente
+    //Salva i campi inseriti dall'utente
     private fun saveinfo() {
         val editor = sharedPref.edit()
-        val username = Username.text.toString()
+
+        //Prende i valori dalle textview
+        val username = Username.text.toString() //Username è l'e-mail
         val password = password.text.toString()
         val autoLogin = chkAutoLogin.isChecked
 
@@ -96,7 +100,7 @@ class login : Fragment() {
         editor.apply()    // Salva le modifiche
     }
 
-    //visualizza le informazioni inserite in precedenza dall'utente per l'autologin
+    //visualizza le informazioni inserite in precedenza dall'utente
     private fun traiinfo() {
         val username = sharedPref.getString(PREF_USERNAME, "")
         val pass = sharedPref.getString(PREF_PASSWORD,"")
@@ -106,13 +110,14 @@ class login : Fragment() {
         password.setText(pass)
         chkAutoLogin.isChecked = autoLogin
     }
+
     //questo metodo permette di nascondere il menu log in
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         super.onCreateOptionsMenu(menu, inflater)
         menu?.clear()
     }
 
-    private fun signIn(email: String, password: String) {
+    private fun signIn(email: String, password: String) { //Email=username
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(MainActivity()) { task ->
                 if (task.isSuccessful) {

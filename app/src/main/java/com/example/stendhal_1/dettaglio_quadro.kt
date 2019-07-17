@@ -152,6 +152,7 @@ class dettaglio_quadro : Fragment() {
                 Toast.makeText(context, "Failed to load comments.", Toast.LENGTH_SHORT).show()
             }
         }
+
         if (bidirezione==true){
             database_quadriemergenti.addValueEventListener(quadroemergenteListener)
             bidirezione=false
@@ -161,8 +162,6 @@ class dettaglio_quadro : Fragment() {
         }
 
     }
-
-
 
 
 
@@ -185,17 +184,20 @@ class dettaglio_quadro : Fragment() {
     }
 
     private fun zoomFoto(img : ImageView) {
+        //Istanzio un oggetto della classe AlertDialog
         val dialogBuilder = AlertDialog.Builder(context)
         val inflater = this.layoutInflater
         val dialogView = inflater.inflate(R.layout.foto, null)
         dialogBuilder.setView(dialogView)
         val imageview = dialogView.findViewById(R.id.imageView) as ImageView
+        //Converto da drawable a bitmap il parametro di ingresso della funzione zoomFoto che è la ''picture'' prelevata
+        //dal fragment Dettaglio_quadro
         val bitmap = (img.drawable as? BitmapDrawable)?.bitmap
         imageview.setImageBitmap(bitmap)
         val alertDialog = dialogBuilder.create()
+        //Permette la visualizzazione del alert dialog
         alertDialog.show()
     }
-
 
 }
 

@@ -40,6 +40,7 @@ class Periodo : Fragment() {
         activity?.requestedOrientation=(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR) //Impedisce la rotazione dello schermo
         (activity as AppCompatActivity).supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.parseColor("#004097")))
         (activity as AppCompatActivity).supportActionBar?.setTitle("Stendhal")
+
         val period = ArrayList<com.example.stendhal_1.datamodel.Periodo?>()
         val adapter = PeriodiAdapter(period, requireContext())
         list_periodi.adapter = adapter
@@ -71,6 +72,7 @@ class Periodo : Fragment() {
         // Imposto il layout manager a lineare per avere scrolling in una direzione
         list_periodi.layoutManager = LinearLayoutManager(activity)
     }
+
 
     fun domyquery(query: String) {
         val period = ArrayList<Periodo?>()
@@ -111,7 +113,8 @@ class Periodo : Fragment() {
         }
 
 
-            database.orderByChild("nome").startAt(query).endAt(query+"\uf8ff").addChildEventListener(childEventListener)  //la query effettuerà la ricerca a partire dal nome
+            database.orderByChild("nome").startAt(query).endAt(query+"\uf8ff").addChildEventListener(childEventListener)
+            //la query effettuerà la ricerca a partire dal nome
 
     }
 }
