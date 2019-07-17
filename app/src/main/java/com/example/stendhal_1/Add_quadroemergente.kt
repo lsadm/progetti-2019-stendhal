@@ -58,17 +58,19 @@ class Add_quadroemergente : Fragment() {
         activity?.requestedOrientation=(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR) //Impedisce la rotazione dello schermo
 
         //Nel caso in cui si voglia modificare un quadro già esistente:
+        // (In questo caso arriviamo in questo fragment a partire dal fragment dettaglio_quadro)
         arguments?.let{
-            //modifico il quadro
             mod = 1
-            //estraggo il quadro dal bundle _ Il put si trova in Dettaglio_quadro - Nella parte della modifica
+            //Estraggo il quadro dal bundle _ Il put si trova in Dettaglio_quadro - Nella parte della modifica in onOptionsItemSelected
             quadro_emergente = it.getParcelable("quadro")
             quadro_emergente?.let {
-                //e mostro nel dettaglio i suoi attributi
+                //Nella schermata di modifica usciranno nelle varie textview, i valori del quadro emergente che si vuole modificare
                 autore=quadro_emergente?.autore
                 Nome.setText(quadro_emergente?.nome)
                 anno.setText(quadro_emergente?.anno.toString())
                 Spiegazione.setText(quadro_emergente?.spiegazione)
+
+                //Scarica la foto del quadro dal database e la inserisce nell' ImageButton foto_quadro del fragment add_quadroemergente
                 download_foto()
                 (activity as AppCompatActivity).supportActionBar?.setTitle("Modifica la tua opera")
             }
@@ -76,34 +78,38 @@ class Add_quadroemergente : Fragment() {
 
 
         //Nel caso in cui debba inserire un nuovo quadro:
+        // (In questo caso arriviamo in questo fragment a partire dal fragment_artista mediante il floating button)
         if(mod!=1) {
             (activity as AppCompatActivity).supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.parseColor("#004097")))
             (activity as AppCompatActivity).supportActionBar?.setTitle("Aggiungi la tua opera")
         }
 
-        // Imposta il funzionamento del pulsante per l'acquisizione dell'immagine
+        // Imposta il funzionamento del pulsante per l'acquisizione dell'immagine - Sia per la modifica che per l'inserimento
         val takePhoto = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
 
         foto_quadro.setOnClickListener {
-            // Creo un intent per acquisire l'immagine
             takePhoto.resolveActivity(activity!!.packageManager)?.also {
                 startActivityForResult(takePhoto, REQUEST_IMAGE_CAPTURE)
             }
         }
+
     }
 
     //Quando si clicca il tick_button:
         override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        val nome = Nome.text.toString()
         val auth = FirebaseAuth.getInstance()
         val id = auth.currentUser?.uid
 
-        ///
+        //Nel caso di inserimento, leggo dal database l'autore corrente
         val leggiautore = object : ValueEventListener {
+
             override fun onDataChange(snapshot: DataSnapshot) {
                 val user: Utente? = snapshot.getValue(Utente::class.java)
                 val autore_temp = user?.nome
                 autore = autore_temp
+
+                //NB: sto in ''Quando si clicca il tick_button''
+                val nome = Nome.text.toString()
                 val anno = anno.text.toString()
                 val spiegazione = Spiegazione.text.toString()
                 var key: String?
@@ -112,39 +118,26 @@ class Add_quadroemergente : Fragment() {
                 quadro_emergente?.anno = anno.toInt()
 
                 //INSERISCO IL QUADRO ALL'INTERNO DEL DATABASE - SEZIONE QUADRI_EMERGENTI
-
                 if (nome.length > 0 && spiegazione.length > 0 && anno.toInt() > 0 && id != null) {
+
                     key = get_key()
                     database.child("Quadri/Quadri_emergenti").child(key.toString()).setValue(
-                        QuadroEmergente(
-                            nome,
-                            autore,
-                            anno.toInt(),
-                            spiegazione,
-                            key,
-                            id
-                        )
+                        QuadroEmergente(nome,autore,anno.toInt(),spiegazione,key,id)
                     )
 
                     ////INSERISCO IL QUADRO ALL'INTERNO DEL DATABASE - SEZIONE SINGOLOUTENTE/MIE_OPERE
                     database.child("Utenti").child(id).child("Mie_opere").child(key.toString()).setValue(
-                        QuadroEmergente(
-                            nome,
-                            autore,
-                            anno.toInt(),
-                            spiegazione,
-                            key,
-                            id
-                        )
+                        QuadroEmergente(nome,autore,anno.toInt(),spiegazione,key,id)
                     )
 
-                    Toast.makeText(activity, "Caricamento in corso", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(activity, "Inserimento di un nuovo quadro", Toast.LENGTH_SHORT).show()
 
-                    if (foto_fatte != 0) caricaFoto(key.toString()) //le carico
+                    if (foto_fatte != 0) caricaFoto(key.toString()) //Carico la foto
                     else Navigation.findNavController(view!!).navigateUp() //altrimenti torno semplicemente indietro
                 }
-                //se alcuni campi sono vuoti non posso caricare il quadro
-                else Toast.makeText(activity, "Riempire campi", Toast.LENGTH_SHORT).show()
+
+                //Se alcuni campi sono vuoti non posso caricare il quadro
+                else Toast.makeText(activity, "Riempire tutti i campi", Toast.LENGTH_SHORT).show()
 
             }
 
@@ -153,12 +146,14 @@ class Add_quadroemergente : Fragment() {
                 Toast.makeText(context, "Failed to load comments.", Toast.LENGTH_SHORT).show()
             }
         }
-        //
-        //
+
+
+        //Solo se devo inserire un nuovo quadro effettuo l'addValueEventListener di leggiautore
         if (mod!=1) database.child("Utenti/" + id + "/Dati/Account/").addValueEventListener(leggiautore)
 
-        else{
 
+        else{
+        val nome = Nome.text.toString()
         val anno = anno.text.toString()
         val spiegazione = Spiegazione.text.toString()
         var key: String?
@@ -166,33 +161,22 @@ class Add_quadroemergente : Fragment() {
         quadro_emergente?.spiegazione = spiegazione
         quadro_emergente?.anno = anno.toInt()
 
-        //inserisco il quadro nel catologo dei quadri degli artisti emergenti
-
             if (nome.length > 0 && spiegazione.length > 0 && anno.toInt() > 0 && id != null) {
                 key = get_key()
+
+                //INSERISCO IL QUADRO ALL'INTERNO DEL DATABASE - SEZIONE QUADRI_EMERGENTI
                 database.child("Quadri/Quadri_emergenti").child(key.toString()).setValue(
-                    QuadroEmergente(
-                        nome,
-                        autore,
-                        anno.toInt(),
-                        spiegazione,
-                        key,
-                        id
-                    )
-                ) //e nell'area personale dell'utente
-                //in quel percorso con identificativo unico inserisco il quadro. Rappresenta la lista di quadri visibile a tutti
-                database.child("Utenti").child(id).child("Mie_opere").child(key.toString()).setValue(
-                    QuadroEmergente(
-                        nome,
-                        autore,
-                        anno.toInt(),
-                        spiegazione,
-                        key,
-                        id
-                    )
+                    QuadroEmergente(nome,autore,anno.toInt(),spiegazione,key,id)
                 )
-                Toast.makeText(activity, "Caricamento in corso", Toast.LENGTH_SHORT).show()
-                //se ci sono foto da caricare
+
+                ////INSERISCO IL QUADRO ALL'INTERNO DEL DATABASE - SEZIONE SINGOLOUTENTE/MIE_OPERE
+                database.child("Utenti").child(id).child("Mie_opere").child(key.toString()).setValue(
+                    QuadroEmergente(nome,autore,anno.toInt(),spiegazione,key,id)
+                )
+
+                Toast.makeText(activity, "Modifica in corso", Toast.LENGTH_SHORT).show()
+
+                //Foto da caricare
                 if (foto_fatte != 0) caricaFoto(key.toString()) //le carico
                 else Navigation.findNavController(view!!).navigateUp() //altrimenti torno semplicemente indietro
             }
@@ -205,9 +189,10 @@ class Add_quadroemergente : Fragment() {
     }
 
 
-    //scarica foto dal database e le inserisce negli ImageButton
+    //Scarica la foto del quadro dal database e la inserisce nell' ImageButton foto_quadro
     private fun download_foto() {
             val imagRef = storageRef.child("Quadri_emergenti").child(quadro_emergente?.key.toString() + "/")
+
             imagRef.child("Image").downloadUrl.addOnSuccessListener {
                 GlideApp.with(this).load(it).into(foto_quadro)
             }.addOnFailureListener {
@@ -216,19 +201,20 @@ class Add_quadroemergente : Fragment() {
         }
 
 
-    //carica le foto sul database
+    //Carica la foto sul database
     private fun caricaFoto(key : String){
+            //Path su su Firebase_storage per il caricamento della foto
             val mountainsRef = storageRef.child("Quadri_emergenti").child(key).child("Image")
+            //Conversione da drawable a bitmap
             val bitmap = (foto_quadro?.drawable as? BitmapDrawable)?.bitmap
             val baos = ByteArrayOutputStream()
             bitmap?.compress(Bitmap.CompressFormat.JPEG,100, baos)
             val data = baos.toByteArray()
+
             if(data.isNotEmpty()) {
-                //l'utente ha caricato delle foto, quindi bisogna caricarle
                 var uploadTask = mountainsRef.putBytes(data) //carica i byte della foto
                 uploadTask.addOnCompleteListener {
                     foto_caricate++
-                    //se è l'ultima
                     if(it.isSuccessful && foto_caricate==foto_fatte) Navigation.findNavController(view!!).navigateUp()
                 }.addOnFailureListener {
                     Toast.makeText(activity, "Foto non inserita correttamente", Toast.LENGTH_SHORT).show()
@@ -237,32 +223,30 @@ class Add_quadroemergente : Fragment() {
 
     }
 
-    //Questo metodo viene invocato per gestire il risultato al ritorno da una activity, occorre determinare chi aveva generato la richiesta
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {     // Acquisizione immagine
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {// Acquisizione immagine
             val immagineCatturata = data?.extras?.get("data") as Bitmap
-                foto_quadro.setImageBitmap(immagineCatturata) //tiene conto di quante foto caricate
-
-
+                foto_quadro.setImageBitmap(immagineCatturata)
             }
             if(foto_fatte<1) foto_fatte=1
         }
 
 
-    //quando esco dall'inserimento ritorna la scritta Sthendal
+    //Quando esco dall'inserimento ritorna la scritta Stendhal
     override fun onDestroyView() {
         super.onDestroyView()
         (activity as AppCompatActivity).supportActionBar?.setTitle("Stendhal")
     }
 
-    //funzione usata per distinguere i due casi: creazione e modifica
+    //get_key effettua operazioni differenti in base al valore assunto dalla variabile mod (per distinguere i due casi: creazione e modifica)
     private fun get_key() : String? {
         if(mod==0) {
-            return database.child("Quadri/Quadri_emergenti")
-                .push().key  //questa push mi restituisce un identificativo unico del percorso creato
+            return database.child("Quadri/Quadri_emergenti").push().key  //Questa push mi restituisce un identificativo unico
         }
         else {
             return quadro_emergente?.key
         }
     }
+
 }

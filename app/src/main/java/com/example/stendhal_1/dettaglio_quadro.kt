@@ -45,29 +45,35 @@ class dettaglio_quadro : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_dettaglio_quadro, container, false)
     }
+
+    //Cosa fare nel caso in cui si selezioni un item del menu
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+
         when(item?.itemId) {
+            //Se si seleziona il Cestino:
             R.id.Cestino  -> {
-                //Per eliminare il quadro
                 val builder = AlertDialog.Builder(activity as AppCompatActivity)
                 builder.setTitle(R.string.AlertMessage)
                 builder.setNegativeButton(R.string.NegativeButton, DialogInterface.OnClickListener { _, which -> }) //chiude la finestra
                 builder.setPositiveButton(R.string.PositiveButton, DialogInterface.OnClickListener { _, which ->
-                    CancellaQuadro() //elimina il quadro
-                    Navigation.findNavController(view!!).navigateUp() //e torna indietro
+                    CancellaQuadro() //Elimina il quadro
+                    Navigation.findNavController(view!!).navigateUp()
                 })
                 builder.show() //mostra la finestra
             }
+
+            //Se si seleziona Modifica:
             R.id.Modifica -> {
-                //crea un bundle e lo passa al fragment inserimento, poi lì verrà modificato
+                //Crea un bundle e lo passa al fragment add_quadroemergente, poi lì il quadro verrà modificato
                 val b = Bundle()
                 b.putParcelable("quadro",quadroemer)
                 Navigation.findNavController(view!!).navigate(R.id.action_to_add_quadroemergente,b)
             }
+
             else -> return false
+
         }
         return true
     }
@@ -77,26 +83,27 @@ class dettaglio_quadro : Fragment() {
             super.onCreateOptionsMenu(menu, inflater)
             menu?.clear()
         if (quadroemer?.id == id) {
-                inflater?.inflate(R.menu.menu_modifica, menu) //viene mostrato solo il menu modifica
+                inflater?.inflate(R.menu.menu_modifica, menu) //Viene mostrato il menu modifica
             }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //Quanti elementi vi sono in un ArrayList di elementi di tipo: Quadro emergente
+        //Quanti elementi vi sono in un ArrayList di oggetti di tipo: Quadro emergente
         fun getItemCount(array: ArrayList<QuadroEmergente?>): Int {
             return array.size
         }
 
         setHasOptionsMenu(true)
         activity?.requestedOrientation=(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR) //Impedisce la rotazione dello schermo
+
         (activity as AppCompatActivity).supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.parseColor("#004097")))
         (activity as AppCompatActivity).supportActionBar?.setTitle("Stendhal")
+
         val arrayquadremer = ArrayList<QuadroEmergente?>()
 
         // Estraggo il parametro (quadro) dal bundle e lo visualizzo
-        //visualizzo il dettaglio
         arguments?.let {
 
             //Caso in cui dal bundle ho ricevuto un quadro storico
@@ -123,12 +130,12 @@ class dettaglio_quadro : Fragment() {
                 downloadFoto(imagRef)
             }
 
-            }
+        }
 
         //PER QUADRO EMERGENTE CAUSALE
         val quadroemergenteListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                //Leggo dal database tutti i quadri emergenti e li metto in quadremer che è un ArrayList
+                //Leggo dal database tutti i quadri emergenti e li metto in arrayquadremer che è un ArrayList
                 arrayquadremer.clear()
                 snapshot.children.forEach {
                     val quadrosingolo:QuadroEmergente = it.getValue(QuadroEmergente::class.java)!!
@@ -153,6 +160,8 @@ class dettaglio_quadro : Fragment() {
             }
         }
 
+        //Se bidirezione=true sono arrivato in questo fragment attraverso l'ImageButton_quadro_del_giorno
+        //In questo caso devo leggere il quadro dal database, cosa che non succedeva se il quadro lo ottenevo mediante bundle
         if (bidirezione==true){
             database_quadriemergenti.addValueEventListener(quadroemergenteListener)
             bidirezione=false
@@ -169,6 +178,7 @@ class dettaglio_quadro : Fragment() {
             imagRef.getBytes(Long.MAX_VALUE).addOnSuccessListener {
                 // Use the bytes to display the image
                 val bitmap = BitmapFactory.decodeByteArray(it, 0, it.size)
+                //Picture è l'id dell'immagine del fragment_dettaglio_quadro.xml
                 picture.setImageBitmap(bitmap)
             }.addOnFailureListener {
                 // Handle any errors

@@ -28,9 +28,6 @@ class artisti_emergenti : Fragment() {
     private val database_emergente = database.child("Quadri_emergenti") //accedo al nodo dei quadri emergenti nel database
     private val TAG = "MainActivity"
 
-
-//metodi
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -41,31 +38,32 @@ class artisti_emergenti : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        activity?.requestedOrientation=(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR) //Impedisce la rotazione dello schermo
         super.onViewCreated(view, savedInstanceState)
+        activity?.requestedOrientation=(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR) //Impedisce la rotazione dello schermo
+
         (activity as AppCompatActivity).supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.parseColor("#004097")))
         (activity as AppCompatActivity).supportActionBar?.setTitle("Stendhal")
+
         val quadroemergente = ArrayList<QuadroEmergente?>()
-        //le chiavi mi serviranno per distinguere due eventuali quadri di due artisti diversi aventi lo stesso nome
         val keys = ArrayList<String>()
         val adapter = AdapterQuadri_emergenti(quadroemergente, requireContext())
-            lista_quadri_emergenti.adapter = adapter
+        lista_quadri_emergenti.adapter = adapter
 
-        //Listener per aggiornare la recycleView
+        //Listener per aggiornare la RecyclerView
         val childEventListener = object : ChildEventListener {
+
             override fun onChildAdded(dataSnapshot: DataSnapshot, previousChildName: String?) {
                 Log.d(TAG, "onChildAdded:" + dataSnapshot.key!!)
-                // A new comment has been added, add it to the displayed list
                 val g = dataSnapshot.getValue(QuadroEmergente::class.java)
                 quadroemergente.add(g)
-                keys.add(dataSnapshot.key.toString()) //aggiungo le varie key in un vettore
+                keys.add(dataSnapshot.key.toString()) //Aggiungo le varie keys in un vettore
                 adapter.notifyItemInserted(quadroemergente.indexOf(g))
             }
 
             override fun onChildChanged(dataSnapshot: DataSnapshot, previousChildName: String?) {
                 Log.d(TAG, "onChildChanged: ${dataSnapshot.key}")
                 val g = dataSnapshot.getValue(QuadroEmergente::class.java)
-                val index = keys.indexOf(dataSnapshot.key.toString()) //ottengo l'indice del quadro aggiornato
+                val index = keys.indexOf(dataSnapshot.key.toString()) //Ottengo l'indice del quadro aggiornato
                 quadroemergente[index]=g
                 adapter.notifyDataSetChanged()
             }
@@ -89,7 +87,7 @@ class artisti_emergenti : Fragment() {
         }
 
 
-            database_emergente.addChildEventListener(childEventListener)
+        database_emergente.addChildEventListener(childEventListener)
 
         // Imposto il layout manager a lineare per avere scrolling in una direzione
         lista_quadri_emergenti.layoutManager = LinearLayoutManager(activity)
@@ -102,6 +100,7 @@ class artisti_emergenti : Fragment() {
                 Navigation.findNavController(it).navigate(R.id.action_to_login)
             }
         }
+
     }
 
     //viene invocata nell'activity per effettuare le ricerche (l'activity passa la query come parametro)

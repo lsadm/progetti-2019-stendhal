@@ -58,28 +58,30 @@ class Fragment_Artista : Fragment() {
 
             lista_quadriemergenti.addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
 
-            val emerg=ArrayList<QuadroEmergente?>()
             val keys = ArrayList<String>()
+            val emerg = ArrayList<QuadroEmergente?>()
             val adapter = AdapterQuadri_emergenti(emerg,requireContext())
             lista_quadriemergenti.adapter = adapter
-            var cont=0 //contatore di righe inserite nella recycleView
 
-            //setta la textView n_opere col valore di cont, inizialmente a 0
+            var cont=0 //Contatore di righe inserite nella RecycleView
+
+            //Setta la textView n_opere col valore di cont, inizialmente posto a 0
             n_opere.text=cont.toString()
 
             //Vari listener (di Firebase) per aggiornare dinamicamente la recyclerView
             val childEventListener = object : ChildEventListener {
+
                 //inserimento elemento
                 override fun onChildAdded(dataSnapshot: DataSnapshot, previousChildName: String?) {
                     Log.d(TAG, "onChildAdded:" + dataSnapshot.key!!)
-                    // A new comment has been added, add it to the displayed list
                     val g = dataSnapshot.getValue(QuadroEmergente::class.java)
                     emerg.add(g)
-                    keys.add(dataSnapshot.key.toString()) //aggiungo le varie key in un vettore
+                    keys.add(dataSnapshot.key.toString()) //Aggiungo le varie key in un vettore
                     adapter.notifyItemInserted(emerg.indexOf(g))
                     cont++
                     try { n_opere.text=cont.toString() }catch(e:Exception) {}
                 }
+
                 //modifica elemento
                 override fun onChildChanged(dataSnapshot: DataSnapshot, previousChildName: String?) {
                     Log.d(TAG, "onChildChanged: ${dataSnapshot.key}")
@@ -108,6 +110,8 @@ class Fragment_Artista : Fragment() {
 
             // Imposto il layout manager a lineare per avere scrolling in una direzione
             lista_quadriemergenti.layoutManager = LinearLayoutManager(activity)
+
+
             floatingActionButton.setOnClickListener {
                 if (auth.currentUser != null) {
                     Navigation.findNavController(it).navigate(R.id.action_to_add_quadroemergente)
@@ -117,15 +121,17 @@ class Fragment_Artista : Fragment() {
                 }
             }
 
-                //scarico dal database le informazioni del singolo utente e le aggiungo in una lista
+                //Prelevo dal database l'email dell'utente corrente
                 leggoemail_user()
-                //chiamata al listener per caricare e modificare la recycleView
-                database.child(user.toString()).child("Mie_opere").addChildEventListener(childEventListener) //il database da cui chiamo il listener fa variare il sottonodo del database che vado a leggere
+
+
+                database.child(user.toString()).child("Mie_opere").addChildEventListener(childEventListener)
+                //in base al valore dell'id dell' user, varia il sottonodo dal quale leggere le opere personali
 
         }
 
 
-        //scarica i dati dell'utente dal database
+      //Leggere e-mail dell'utente corrente dal database
         private fun leggoemail_user() {
             val leggoemail = object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {

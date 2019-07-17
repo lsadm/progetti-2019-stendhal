@@ -26,9 +26,6 @@ class newaccount : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //modifico il nome dell'action bar
-        (activity as AppCompatActivity).supportActionBar?.setTitle("Nuovo Account")
-        //con questa riga posso aggiungere un riferimento al menu all'interno del fragment newaccount
         setHasOptionsMenu(true)
     }
 
@@ -36,10 +33,10 @@ class newaccount : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_newaccount, container, false)
     }
-    //questa funzione rende invisibile il menu nel fragment newaccount
+
+    //Questa funzione rende invisibile il menu nel fragment newaccount
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         super.onCreateOptionsMenu(menu, inflater)
         menu?.clear()
@@ -56,14 +53,14 @@ class newaccount : Fragment() {
                 createAccount(email.text.toString(),nome.text.toString(),password.text.toString())
             }
             else{
-                Toast.makeText(activity,"Mancanza di alcuni campi",Toast.LENGTH_SHORT).show()
+                Toast.makeText(activity,"Inserire correttamente tutti i campi",Toast.LENGTH_SHORT).show()
             }
         }
 
     }
 
-    //memorizza il nuovo utente sul database
-    private fun writeNewUser(user : String?, usr : Utente) {
+    //Memorizza il nuovo utente sul database
+    private fun memorizzautente(user : String?, usr : Utente) {
         database.child("Utenti").child(user.toString()).child("Dati").child("Account").setValue(usr)
     }
 
@@ -75,21 +72,20 @@ class newaccount : Fragment() {
     fun createAccount(email : String, nome : String,password : String) {
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(MainActivity()) { task ->
                 if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "createUserWithEmail:success")
                     val user = auth.currentUser?.uid
                     val usr = Utente(nome,email)
-                    writeNewUser(user, usr) //memorizza sul database
+                    memorizzautente(user, usr) //memorizza sul database
                     Toast.makeText(context, "Utente registrato con successo", Toast.LENGTH_SHORT).show()
                     Navigation.findNavController(view!!).navigateUp()
                     Navigation.findNavController(view!!).navigateUp()
                 }
                 else {
-                    // If sign in fails, display a message to the user.
                     Log.w(TAG, "createUserWithEmail:failure", task.exception)
                     Toast.makeText(activity, "Errore nella registrazione", Toast.LENGTH_SHORT).show()
                 }
             }
+
     }
 
 
